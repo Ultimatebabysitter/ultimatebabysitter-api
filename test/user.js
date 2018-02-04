@@ -4,12 +4,9 @@ let server = require('../server');
 let should = chai.should();
 
 chai.use(chaiHttp);
-//Our parent block
-describe('Users', () => {
 
-  /*
-  * Test the /GET route
-  */
+describe('Users', () => {
+  // Test the /GET route
   describe('/GET users', () => {
     it('it should GET all the users', (done) => {
       chai.request(server)
@@ -20,5 +17,4 @@ describe('Users', () => {
           });
     });
   });
-
 });
