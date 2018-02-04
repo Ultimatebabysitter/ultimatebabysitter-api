@@ -4,7 +4,7 @@
   "description": "Open source babysitting app.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "./node_modules/.bin/mocha --reporter spec"
   },
   "author": "Joseph Leon",
   "license": "ISC",
