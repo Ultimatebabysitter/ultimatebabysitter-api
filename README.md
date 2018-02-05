@@ -2,13 +2,12 @@
 
 UltimateBabysitter is an open-source application to help find babysitters.
 
-### ToDo
+## Installation
+1. Clone the repository locally.
+2. Run `npm install`
+3. Run `npm start`
+4. Go to http://127.0.0.1:3000
 
-1. people can create an account
-2. an account will have attributes id, name, age, location, type, pay, details
-3. search feature to find sitters by age, location, pay, details
-4. a user of type babysitter can have reviews
-5. get sitter creds and background
 
 ### MIT License
 
