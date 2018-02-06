@@ -25,6 +25,7 @@ describe('Users', () => {
         .post('/users')
         .end((err, res) => {
           res.should.have.status(201);
+          res.body.user.should.be.an('object');
           done();
         });
     });
