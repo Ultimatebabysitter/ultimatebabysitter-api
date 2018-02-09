@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "./node_modules/.bin/mocha --exit --reporter spec",
-    "start": "nodemon server.js"
+    "start": "nodemon server.js",
+    "mongolocal": "mongo --host 127.0.0.1:27017"
   },
   "author": "Joseph Leon",
   "license": "ISC",
