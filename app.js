@@ -4,7 +4,11 @@ const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 
+// routes
 const userRoutes = require('./api/routes/users.js')
+
+// connect to mongodb
+mongoose.connect(process.env.MONGODB_HOST);
 
 // misc
 app.use(morgan('dev'));
