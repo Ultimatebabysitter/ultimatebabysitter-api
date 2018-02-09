@@ -1,16 +1,29 @@
 const express = require('express');
 const router = express.Router();
+const mongoose = require('mongoose');
+const User = require('../models/user.js');
 
 // creates a user account
 router.post('/', (req, res, next) => {
-  const user = {
-    name: req.body.name,
+  const user = User({
+    _id: new mongoose.Types.ObjectId(),
+    first_name: req.body.first_name,
+    last_name: req.body.last_name,
+    email: req.body.email,
     age: req.body.age,
     location: req.body.location,
     type: req.body.type,
     pay: req.body.pay,
-    details: req.body.details
-  };
+    details: req.body.details,
+    verification: req.body.verification,
+    report: req.body.report
+  });
+  user
+    .save()
+    .then(result => {
+      console.log(result);
+    })
+    .catch(err => console.log(err));
   res.status(201).json({
     message: 'handling POST request to /users',
     user: user
