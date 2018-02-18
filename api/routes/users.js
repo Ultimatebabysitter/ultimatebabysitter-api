@@ -23,22 +23,33 @@ router.post('/', (req, res, next) => {
     .save()
     .then(result => {
       console.log(result);
+      res.status(201).json({
+        message: 'handling POST request to /users',
+        user: result
+      });
     })
     .catch(err => {
       console.log(err);
       res.status(500).json({error: err});
     });
-  res.status(201).json({
-    message: 'handling POST request to /users',
-    user: user
-  });
 });
 
 // returns a list of users
 router.get('/', (req, res, next) => {
-  res.status(200).json({
-    message: 'handling GET request to /users'
-  });
+  User.find()
+    .exec()
+    .then(docs => {
+      console.log(docs);
+      if (docs) {
+        res.status(200).json(docs);
+      } else {
+        res.status(200).json({message: 'There are no users in the DB.'});
+      }
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({error: err});
+    });
 });
 
 // get a specific user
@@ -48,7 +59,12 @@ router.get('/:userId', (req, res, next) => {
     .exec()
     .then(doc => {
       console.log(doc);
-      res.status(200).json(doc);
+      // @todo this never falls to the 404
+      if (doc) {
+        res.status(200).json(doc);
+      } else {
+        res.status(404).json({message: 'No valid entry found.'});
+      }
     })
     .catch(err => {
       console.log(err);
