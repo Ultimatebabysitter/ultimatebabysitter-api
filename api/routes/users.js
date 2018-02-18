@@ -73,10 +73,21 @@ router.get('/:userId', (req, res, next) => {
 });
 
 // update a specific user
-router.patch('/', (req, res, next) => {
-  res.status(200).json({
-    message: 'handling PATCH request to /users'
-  });
+router.patch('/:userId', (req, res, next) => {
+  const id = req.params.userId;
+  const updateOps = {};
+  for (const ops of req.body) {
+    updateOps[ops.propName] = ops.value;
+  }
+  User.update( { _id: id }, { $set: updateOps} )
+    .exec()
+    .then(result => {
+      console.log(result);
+      res.status(200).json(result);
+    })
+    .catch(err => {
+      res.status(500).json({error: err});
+    })
 });
 
 // delete a specific user
