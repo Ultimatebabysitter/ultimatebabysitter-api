@@ -41,10 +41,16 @@ router.get('/', (req, res, next) => {
 // get a specific user
 router.get('/:userId', (req, res, next) => {
   const id = req.params.userId;
-  res.status(200).json({
-    message: 'request a specific user by id',
-    id: id
-  });
+  User.findById(id)
+    .exec()
+    .then(doc => {
+      console.log(doc);
+      res.status(200).json(doc);
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({error: err});
+    });
 });
 
 // update a specific user
