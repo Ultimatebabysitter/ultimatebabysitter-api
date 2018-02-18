@@ -24,7 +24,10 @@ router.post('/', (req, res, next) => {
     .then(result => {
       console.log(result);
     })
-    .catch(err => console.log(err));
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({error: err});
+    });
   res.status(201).json({
     message: 'handling POST request to /users',
     user: user
