@@ -40,7 +40,7 @@ router.get('/', (req, res, next) => {
     .exec()
     .then(docs => {
       console.log(docs);
-      if (docs) {
+      if (docs.length >= 0) {
         res.status(200).json(docs);
       } else {
         res.status(200).json({message: 'There are no users in the DB.'});
@@ -80,10 +80,16 @@ router.patch('/', (req, res, next) => {
 });
 
 // delete a specific user
-router.delete('/', (req, res, next) => {
-  res.status(200).json({
-    message: 'handling DELETE request to /users'
-  });
+router.delete('/:userId', (req, res, next) => {
+  const id = req.params.userId;
+  User.remove({ _id: id })
+    .exec()
+    .then(result => {
+      res.status(200).json(result);
+    })
+    .catch(err => {
+      res.status(500).json({error: err});
+    });
 });
 
 module.exports = router;
