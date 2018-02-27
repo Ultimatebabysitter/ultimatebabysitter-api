@@ -1,5 +1,3 @@
-[![npm][npm]][npm-url]
-
 # Ultimate Babysitter
 
 UltimateBabysitter is an open-source application to help find babysitters.
@@ -32,6 +30,3 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-
-[npm]: https://img.shields.io/npm/v/webpack.svg
-[npm-url]: https://npmjs.com/package/webpack
