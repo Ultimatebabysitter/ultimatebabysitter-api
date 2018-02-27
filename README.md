@@ -1,3 +1,5 @@
+[![npm][npm]][npm-url]
+
 # Ultimate Babysitter
 
 UltimateBabysitter is an open-source application to help find babysitters.
