@@ -1,7 +1,7 @@
-const express = require('express');
-const router = express.Router();
-const mongoose = require('mongoose');
-const User = require('../models/user.js');
+const express = require('express')
+const router = express.Router()
+const mongoose = require('mongoose')
+const User = require('../models/user.js')
 
 // creates a user account
 router.post('/', (req, res, next) => {
@@ -18,89 +18,89 @@ router.post('/', (req, res, next) => {
     verification: req.body.verification,
     report: req.body.report,
     password: req.body.password
-  });
+  })
   user
     .save()
     .then(result => {
-      console.log(result);
+      console.log(result)
       res.status(201).json({
         message: 'handling POST request to /users',
         user: result
-      });
+      })
     })
     .catch(err => {
-      console.log(err);
-      res.status(500).json({error: err});
-    });
-});
+      console.log(err)
+      res.status(500).json({error: err})
+    })
+})
 
 // returns a list of users
 router.get('/', (req, res, next) => {
   User.find()
     .exec()
     .then(docs => {
-      console.log(docs);
+      console.log(docs)
       if (docs.length >= 0) {
-        res.status(200).json(docs);
+        res.status(200).json(docs)
       } else {
-        res.status(200).json({message: 'There are no users in the DB.'});
+        res.status(200).json({message: 'There are no users in the DB.'})
       }
     })
     .catch(err => {
-      console.log(err);
-      res.status(500).json({error: err});
-    });
-});
+      console.log(err)
+      res.status(500).json({error: err})
+    })
+})
 
 // get a specific user
 router.get('/:userId', (req, res, next) => {
-  const id = req.params.userId;
+  const id = req.params.userId
   User.findById(id)
     .exec()
     .then(doc => {
-      console.log(doc);
+      console.log(doc)
       // @todo this never falls to the 404
       if (doc) {
-        res.status(200).json(doc);
+        res.status(200).json(doc)
       } else {
-        res.status(404).json({message: 'No valid entry found.'});
+        res.status(404).json({message: 'No valid entry found.'})
       }
     })
     .catch(err => {
-      console.log(err);
-      res.status(500).json({error: err});
-    });
-});
+      console.log(err)
+      res.status(500).json({error: err})
+    })
+})
 
 // update a specific user
 router.patch('/:userId', (req, res, next) => {
-  const id = req.params.userId;
-  const updateOps = {};
+  const id = req.params.userId
+  const updateOps = {}
   for (const ops of req.body) {
-    updateOps[ops.propName] = ops.value;
+    updateOps[ops.propName] = ops.value
   }
-  User.update( { _id: id }, { $set: updateOps} )
+  User.update({ _id: id }, { $set: updateOps})
     .exec()
     .then(result => {
-      console.log(result);
-      res.status(200).json(result);
+      console.log(result)
+      res.status(200).json(result)
     })
     .catch(err => {
-      res.status(500).json({error: err});
+      res.status(500).json({error: err})
     })
-});
+})
 
 // delete a specific user
 router.delete('/:userId', (req, res, next) => {
-  const id = req.params.userId;
+  const id = req.params.userId
   User.remove({ _id: id })
     .exec()
     .then(result => {
-      res.status(200).json(result);
+      res.status(200).json(result)
     })
     .catch(err => {
-      res.status(500).json({error: err});
-    });
-});
+      res.status(500).json({error: err})
+    })
+})
 
-module.exports = router;
+module.exports = router
