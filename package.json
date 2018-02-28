@@ -5,8 +5,10 @@
   "main": "index.js",
   "scripts": {
     "test": "./node_modules/.bin/mocha --exit --reporter spec",
-    "start": "nodemon server.js",
-    "mongolocal": "mongo --host 127.0.0.1:27017"
+    "start": "nodemon app.js",
+    "mongolocal": "mongo --host 127.0.0.1:27017",
+    "standard": "standard",
+    "standard-fix": "standard --fix"
   },
   "author": "Joseph Leon",
   "license": "ISC",
@@ -20,6 +22,7 @@
     "chai": "^4.1.2",
     "chai-http": "^3.0.0",
     "mocha": "^5.0.0",
-    "nodemon": "^1.14.12"
+    "nodemon": "^1.14.12",
+    "standard": "^10.0.3"
   }
 }
