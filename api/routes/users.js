@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const mongoose = require('mongoose')
 const User = require('../models/user.js')
+const passwordHash = require('password-hash')
 
 // creates a user account
 router.post('/', (req, res, next) => {
@@ -17,7 +18,7 @@ router.post('/', (req, res, next) => {
     details: req.body.details,
     verification: req.body.verification,
     report: req.body.report,
-    password: req.body.password
+    password: passwordHash.generate(req.body.password)
   })
   user
     .save()
