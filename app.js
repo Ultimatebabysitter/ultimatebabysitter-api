@@ -6,6 +6,7 @@ const mongoose = require('mongoose')
 
 // routes
 const userRoutes = require('./api/routes/users.js')
+const reportRoutes = require('./api/routes/reports.js')
 
 // connect to mongodb
 mongoose.connect(process.env.MONGODB_HOST)
@@ -28,6 +29,7 @@ app.use((req, res, next) => {
 
 // routes
 app.use('/users', userRoutes)
+app.use('/reports', reportRoutes)
 
 // error catching
 app.use((req, res, next) => {
