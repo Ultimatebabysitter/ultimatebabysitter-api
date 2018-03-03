@@ -38,14 +38,14 @@ router.post('/', (req, res, next) => {
 // returns a list of users
 router.get('/', (req, res, next) => {
   User.find()
+    .select('email location _id')
     .exec()
     .then(docs => {
-      console.log(docs)
-      if (docs.length >= 0) {
-        res.status(200).json(docs)
-      } else {
-        res.status(200).json({message: 'There are no users in the DB.'})
+      const response = {
+        count: docs.length,
+        users: docs
       }
+      res.status(200).json(response)
     })
     .catch(err => {
       console.log(err)
