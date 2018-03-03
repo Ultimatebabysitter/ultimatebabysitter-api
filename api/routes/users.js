@@ -43,7 +43,17 @@ router.get('/', (req, res, next) => {
     .then(docs => {
       const response = {
         count: docs.length,
-        users: docs
+        users: docs.map(doc => {
+          return {
+            email: doc.email,
+            location: doc.location,
+            _id: doc._id,
+            response: {
+              type: 'GET',
+              url: 'http//:127.0.0.1:3000/users' + doc._id
+            }
+          }
+        })
       }
       res.status(200).json(response)
     })
