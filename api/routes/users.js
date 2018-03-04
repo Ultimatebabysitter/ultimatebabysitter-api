@@ -17,7 +17,7 @@ router.post('/', (req, res, next) => {
     pay: req.body.pay,
     details: req.body.details,
     verification: req.body.verification,
-    report: req.body.report,
+    reports: req.body.report,
     password: passwordHash.generate(req.body.password)
   })
   user
