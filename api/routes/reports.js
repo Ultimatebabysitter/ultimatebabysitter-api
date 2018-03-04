@@ -25,4 +25,18 @@ router.post('/', (req, res, next) => {
     })
 })
 
+// show reports by user
+router.get('/:userId', (req, res, next) => {
+  const id = req.params.userId;
+  Report.findOne({ 'user': id })
+    .exec()
+    .then(doc => {
+      res.status(200).json(doc)
+    })
+    .catch(err => {
+      console.log(err)
+      res.status(500).json({error: err})
+    })
+})
+
 module.exports = router
