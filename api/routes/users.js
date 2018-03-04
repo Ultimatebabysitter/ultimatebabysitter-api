@@ -4,7 +4,7 @@ const mongoose = require('mongoose')
 const User = require('../models/user.js')
 const passwordHash = require('password-hash')
 
-// creates a user account
+// create a user account
 router.post('/', (req, res, next) => {
   const user = User({
     _id: new mongoose.Types.ObjectId(),
@@ -35,7 +35,7 @@ router.post('/', (req, res, next) => {
     })
 })
 
-// returns a list of users
+// return a list of users
 router.get('/', (req, res, next) => {
   User.find()
     .select('email location _id')
@@ -50,7 +50,7 @@ router.get('/', (req, res, next) => {
             _id: doc._id,
             response: {
               type: 'GET',
-              url: 'http//:127.0.0.1:3000/users' + doc._id
+              url: req.protocol + '://' + req.get('host') + req.originalUrl + '/' + doc._id
             }
           }
         })

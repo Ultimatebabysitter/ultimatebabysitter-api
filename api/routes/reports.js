@@ -10,7 +10,7 @@ router.post('/', (req, res, next) => {
     user: req.body.user,
     comment: req.body.comment
   })
-  user
+  report
     .save()
     .then(result => {
       console.log(result)
