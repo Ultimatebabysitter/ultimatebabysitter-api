@@ -5,4 +5,4 @@ const ratingSchema = mongoose.Schema({
   user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
 })
 
-module.exports = mongoose.model('Rating'. ratingSchema)
+module.exports = mongoose.model('Rating', ratingSchema)
