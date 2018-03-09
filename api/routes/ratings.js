@@ -25,18 +25,34 @@ router.post('/', (req, res, next) => {
     })
 })
 
-// get users average rating
+// get a users average rating
 router.get('/:userId', (req, res, next) => {
   const id = req.params.userId
-  Rating.findOne({ 'user': id })
+  Rating.find({ 'user': id })
     .exec()
-    .then(doc => {
-      console.log(doc);
-      console.log(req.params.userId);
-      if (doc) {
-        res.status(200).json(doc)
+    .then(docs => {
+      var averageStorage = 0;
+      for (i = 0; i < docs.length; i++) {
+        ratingTrail = docs[i].rating;
+        averageStorage = ratingTrail + averageStorage;
+      }
+      userRatingAverage = averageStorage / docs.length;
+      const response = {
+        count: docs.length,
+        userRatingAverage: userRatingAverage,
+        ratings: docs.map(doc => {
+          return {
+            id: doc._id,
+            user: doc.user,
+            rating: doc.rating
+          }
+        })
+      }
+      if (docs) {
+        console.log(response);
+        res.status(200).json(response)
       } else {
-        res.status(404).json({message: 'No valid entry found.'})
+        res.status(404).json({message: 'No ratings found for user.'})
       }
     })
     .catch(err => {
