@@ -3,6 +3,7 @@ const app = express()
 const morgan = require('morgan')
 const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
+const http = require('http')
 
 // routes
 const userRoutes = require('./api/routes/users.js')
@@ -49,13 +50,10 @@ app.use((error, req, res, next) => {
   })
 })
 
-const http = require('http')
-// const app = require('./app')
 
+// server
 const port = process.env.PORT || 3000
-
 const server = http.createServer(app)
-
 if (!module.parent) {
   server.listen(port)
 }
