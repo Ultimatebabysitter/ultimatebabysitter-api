@@ -3,6 +3,7 @@ const router = express.Router()
 const mongoose = require('mongoose')
 const User = require('../models/user.js')
 const passwordHash = require('password-hash')
+const zipcodes = require('zipcodes');
 
 // create a user account
 router.post('/', (req, res, next) => {
@@ -116,6 +117,16 @@ router.delete('/:userId', (req, res, next) => {
     .catch(err => {
       res.status(500).json({error: err})
     })
+})
+
+// find nearby users
+router.get('/distance/:distance', (req, res, next) => {
+  const distance = req.params.distance
+  const rad = zipcodes.radius(33609, distance);
+  const response = {
+    nearbyZipcodes: rad
+  }
+  res.status(200).json(response)
 })
 
 module.exports = router
