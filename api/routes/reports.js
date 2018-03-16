@@ -27,7 +27,7 @@ router.post('/', (req, res, next) => {
 
 // show reports by user
 router.get('/:userId', (req, res, next) => {
-  const id = req.params.userId;
+  const id = req.params.userId
   Report.findOne({ 'user': id })
     .exec()
     .then(doc => {

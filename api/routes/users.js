@@ -3,7 +3,7 @@ const router = express.Router()
 const mongoose = require('mongoose')
 const User = require('../models/user.js')
 const passwordHash = require('password-hash')
-const zipcodes = require('zipcodes');
+const zipcodes = require('zipcodes')
 
 // create a user account
 router.post('/', (req, res, next) => {
@@ -122,7 +122,7 @@ router.delete('/:userId', (req, res, next) => {
 // find nearby users
 router.get('/distance/:distance', (req, res, next) => {
   const distance = req.params.distance
-  const nearbyZipcodes = zipcodes.radius(33602, distance);
+  const nearbyZipcodes = zipcodes.radius(33602, distance)
   User.find({ 'zip': { $in: nearbyZipcodes} })
     .exec()
     .then(docs => {
@@ -137,7 +137,7 @@ router.get('/distance/:distance', (req, res, next) => {
         })
       }
       res.status(200).json(response)
-  })
+    })
 })
 
 module.exports = router
