@@ -28,14 +28,12 @@ router.post('/', (req, res, next) => {
   user
     .save()
     .then(result => {
-      console.log(result)
       res.status(201).json({
         message: 'handling POST request to /users',
         user: result
       })
     })
     .catch(err => {
-      console.log(err)
       res.status(500).json({error: err})
     })
 })
@@ -63,7 +61,6 @@ router.get('/', (req, res, next) => {
       res.status(200).json(response)
     })
     .catch(err => {
-      console.log(err)
       res.status(500).json({error: err})
     })
 })
@@ -74,8 +71,6 @@ router.get('/:userId', (req, res, next) => {
   User.findById(id)
     .exec()
     .then(doc => {
-      console.log(doc)
-      // @todo this never falls to the 404
       if (doc) {
         res.status(200).json(doc)
       } else {
@@ -83,7 +78,6 @@ router.get('/:userId', (req, res, next) => {
       }
     })
     .catch(err => {
-      console.log(err)
       res.status(500).json({error: err})
     })
 })
@@ -98,7 +92,6 @@ router.patch('/:userId', (req, res, next) => {
   User.update({ _id: id }, { $set: updateOps})
     .exec()
     .then(result => {
-      console.log(result)
       res.status(200).json(result)
     })
     .catch(err => {
