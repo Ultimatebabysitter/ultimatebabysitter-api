@@ -43,7 +43,7 @@ router.post('/', (req, res, next) => {
 // return a list of users
 router.get('/', (req, res, next) => {
   User.find()
-    .select('email location _id')
+    .select('email zip _id')
     .exec()
     .then(docs => {
       const response = {
@@ -51,7 +51,7 @@ router.get('/', (req, res, next) => {
         users: docs.map(doc => {
           return {
             email: doc.email,
-            location: doc.location,
+            zip: doc.zip,
             _id: doc._id,
             response: {
               type: 'GET',
@@ -122,11 +122,22 @@ router.delete('/:userId', (req, res, next) => {
 // find nearby users
 router.get('/distance/:distance', (req, res, next) => {
   const distance = req.params.distance
-  const rad = zipcodes.radius(33609, distance);
-  const response = {
-    nearbyZipcodes: rad
-  }
-  res.status(200).json(response)
+  const nearbyZipcodes = zipcodes.radius(33602, distance);
+  User.find({ 'zip': { $in: nearbyZipcodes} })
+    .exec()
+    .then(docs => {
+      const response = {
+        nearbyZipcodes: nearbyZipcodes,
+        users: docs.map(doc => {
+          return {
+            name: doc.first_name,
+            zip: doc.zip,
+            email: doc.email
+          }
+        })
+      }
+      res.status(200).json(response)
+  })
 })
 
 module.exports = router
