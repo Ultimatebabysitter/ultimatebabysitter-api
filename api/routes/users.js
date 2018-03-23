@@ -89,7 +89,7 @@ router.patch('/:userId', (req, res, next) => {
   for (const ops of req.body) {
     updateOps[ops.propName] = ops.value
   }
-  User.update({ _id: id }, { $set: updateOps})
+  User.update({ _id: id }, { $set: updateOps })
     .exec()
     .then(result => {
       res.status(200).json(result)
@@ -115,6 +115,7 @@ router.delete('/:userId', (req, res, next) => {
 // find nearby users
 router.get('/distance/:distance', (req, res, next) => {
   const distance = req.params.distance
+  // @todo change hardcoded zip to be logged in users zip
   const nearbyZipcodes = zipcodes.radius(33602, distance)
   User.find({ 'zip': { $in: nearbyZipcodes} })
     .exec()
@@ -130,6 +131,9 @@ router.get('/distance/:distance', (req, res, next) => {
         })
       }
       res.status(200).json(response)
+    })
+    .catch(err => {
+      res.status(500).json({error: err})
     })
 })
 

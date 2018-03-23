@@ -13,14 +13,12 @@ router.post('/', (req, res, next) => {
   report
     .save()
     .then(result => {
-      console.log(result)
       res.status(201).json({
         message: 'handling POST request to /reports',
         report: result
       })
     })
     .catch(err => {
-      console.log(err)
       res.status(500).json({error: err})
     })
 })
@@ -34,7 +32,6 @@ router.get('/:userId', (req, res, next) => {
       res.status(200).json(doc)
     })
     .catch(err => {
-      console.log(err)
       res.status(500).json({error: err})
     })
 })

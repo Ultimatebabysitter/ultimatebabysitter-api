@@ -57,4 +57,7 @@ router.get('/:userId', (req, res, next) => {
     })
 })
 
+// @todo
+// add routes to edit and delete
+
 module.exports = router
