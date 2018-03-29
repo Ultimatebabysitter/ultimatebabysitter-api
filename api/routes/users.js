@@ -121,14 +121,15 @@ router.get('/distance/:distance', (req, res, next) => {
     .exec()
     .then(docs => {
       const response = {
-        nearbyZipcodes: nearbyZipcodes,
+        numberOfUsers: docs.length,
         users: docs.map(doc => {
           return {
             name: doc.first_name,
             zip: doc.zip,
             email: doc.email
           }
-        })
+        }),
+        nearbyZipcodes: nearbyZipcodes
       }
       res.status(200).json(response)
     })
