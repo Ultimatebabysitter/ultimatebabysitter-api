@@ -5,6 +5,7 @@ const User = require('../models/user.js')
 const passwordHash = require('password-hash')
 const zipcodes = require('zipcodes')
 const jwt = require('jsonwebtoken')
+const userAuthenticate = require('../middleware/user-authentication')
 
 // create a user account
 router.post('/', (req, res, next) => {
@@ -141,10 +142,9 @@ router.delete('/:userId', (req, res, next) => {
 })
 
 // find nearby users
-router.get('/distance/:distance', (req, res, next) => {
+router.get('/distance/:distance', userAuthenticate, (req, res, next) => {
   const distance = req.params.distance
-  // @todo change hardcoded zip to be logged in users zip
-  const nearbyZipcodes = zipcodes.radius(33602, distance)
+  const nearbyZipcodes = zipcodes.radius(req.userData.zip, distance)
   User.find({ 'zip': { $in: nearbyZipcodes} })
     .exec()
     .then(docs => {
