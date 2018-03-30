@@ -4,6 +4,7 @@ const mongoose = require('mongoose')
 const User = require('../models/user.js')
 const passwordHash = require('password-hash')
 const zipcodes = require('zipcodes')
+const jwt = require('jsonwebtoken')
 
 // create a user account
 router.post('/', (req, res, next) => {
@@ -48,7 +49,15 @@ router.post('/authenticate', (req, res, next) => {
       }
       var hashedPassword = user[0].password;
       if (passwordHash.verify(req.body.password, hashedPassword)) {
-        return res.status(200).json({message: 'auth worked'})
+        const token = jwt.sign({
+          email: user[0].email,
+          zip: user[0].zip,
+          userId: user[0]._id
+        }, process.env.JWT_KEY, {expiresIn: "1h"})
+        return res.status(200).json({
+          message: 'auth worked',
+          token: token
+        })
       }
       res.status(401).json({message: 'auth failed'})
     })
