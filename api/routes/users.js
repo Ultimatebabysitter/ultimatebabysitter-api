@@ -38,6 +38,25 @@ router.post('/', (req, res, next) => {
     })
 })
 
+// authenticate a user
+router.post('/authenticate', (req, res, next) => {
+  User.find({email: req.body.email})
+    .exec()
+    .then(user => {
+      if (user.length < 1) {
+        return res.status(401).json({message: 'auth failed'})
+      }
+      var hashedPassword = user[0].password;
+      if (passwordHash.verify(req.body.password, hashedPassword)) {
+        return res.status(200).json({message: 'auth worked'})
+      }
+      res.status(401).json({message: 'auth failed'})
+    })
+    .catch(err => {
+      res.status(500).json({error: err})
+    })
+})
+
 // return a list of users
 router.get('/', (req, res, next) => {
   User.find()
