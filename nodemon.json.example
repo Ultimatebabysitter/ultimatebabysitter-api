@@ -1,5 +1,6 @@
 {
   "env": {
-    "MONGODB_HOST": "mongodb://127.0.0.1:27017/"
+    "MONGODB_HOST": "mongodb://127.0.0.1:27017/",
+    "JWT_KEY": "DkSW0IT0d0t1w3Qg95e2mms9pW0NkH"
   }
 }
