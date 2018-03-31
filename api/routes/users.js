@@ -100,10 +100,10 @@ router.get('/:userId', (req, res, next) => {
   User.findById(id)
     .exec()
     .then(doc => {
-      if (doc) {
+      if (doc.type === "Babysitter") {
         res.status(200).json(doc)
       } else {
-        res.status(404).json({message: 'No valid entry found.'})
+        res.status(404).json({message: 'no babysitter found'})
       }
     })
     .catch(err => {
@@ -112,7 +112,7 @@ router.get('/:userId', (req, res, next) => {
 })
 
 // update a specific user
-router.patch('/:userId', (req, res, next) => {
+router.patch('/:userId', userAuthenticate, (req, res, next) => {
   const id = req.params.userId
   const updateOps = {}
   for (const ops of req.body) {
@@ -129,16 +129,19 @@ router.patch('/:userId', (req, res, next) => {
 })
 
 // delete a specific user
-router.delete('/:userId', (req, res, next) => {
+router.delete('/:userId', userAuthenticate, (req, res, next) => {
   const id = req.params.userId
-  User.remove({ _id: id })
-    .exec()
-    .then(result => {
-      res.status(200).json(result)
-    })
-    .catch(err => {
-      res.status(500).json({error: err})
-    })
+  if (req.userData._id === req.params.userId || req.userData.type === "admin") {
+    User.remove({ _id: id })
+      .exec()
+      .then(result => {
+        res.status(200).json(result)
+      })
+      .catch(err => {
+        res.status(500).json({error: err})
+      })
+  }
+  res.status(500).json({error: "auth failed"})
 })
 
 // find nearby users
