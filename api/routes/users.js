@@ -6,6 +6,8 @@ const passwordHash = require('password-hash')
 const zipcodes = require('zipcodes')
 const jwt = require('jsonwebtoken')
 const userAuthenticate = require('../middleware/user-authentication')
+const randomstring = require('randomstring')
+const nodemailer = require('nodemailer')
 
 // create a user account
 router.post('/', (req, res, next) => {
@@ -25,19 +27,92 @@ router.post('/', (req, res, next) => {
     details: req.body.details,
     verification: req.body.verification,
     reports: req.body.report,
-    password: passwordHash.generate(req.body.password)
+    password: passwordHash.generate(req.body.password),
+    status: 'pending',
+    temp: randomstring.generate()
   })
   user
     .save()
     .then(result => {
-      res.status(201).json({
-        message: 'handling POST request to /users',
-        user: result
-      })
+      if (result) {
+        console.log(result);
+        const transporter = nodemailer.createTransport({
+            host: 'smtp.ethereal.email',
+            port: 587,
+            auth: {
+                user: process.env.ETHEREAL_EMAIL,
+                pass: process.env.ETHEREAL_PASSWORD
+            }
+        });
+
+        let mailOptions = {
+            from: '"User mail" <foo@example.com>', // sender address
+            to: 'bar@example.com, baz@example.com', // list of receivers
+            subject: 'Hello ✔', // Subject line
+            text: 'Hello world?', // plain text body
+            html: '<h3>User email</h3>' // html body
+        };
+
+        transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+              // res.status(500).json({mailerror: err})
+              return console.log(error);
+            }
+            console.log('Message sent: %s', info.messageId);
+            // Preview only available when sending through an Ethereal account
+            console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+
+            // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
+            // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
+            return res.status(201).json({
+              message: 'handling POST request to /users',
+              message_sent: info.messageId,
+              preview_url: nodemailer.getTestMessageUrl(info),
+              user: result
+            })
+        });
+
+      }
     })
     .catch(err => {
       res.status(500).json({error: err})
     })
+})
+
+router.get('/testmail', (req, res, next) => {
+  nodemailer.createTestAccount((err, account) => {
+      const transporter = nodemailer.createTransport({
+          host: 'smtp.ethereal.email',
+          port: 587,
+          auth: {
+              user: process.env.ETHEREAL_EMAIL,
+              pass: process.env.ETHEREAL_PASSWORD
+          }
+      });
+
+      let mailOptions = {
+          from: '"Fred Foo 👻" <foo@example.com>', // sender address
+          to: 'bar@example.com, baz@example.com', // list of receivers
+          subject: 'Hello ✔', // Subject line
+          text: 'Hello world?', // plain text body
+          html: '<b>Hello world?</b>' // html body
+      };
+
+      // send mail with defined transport object
+      transporter.sendMail(mailOptions, (error, info) => {
+          if (error) {
+            // res.status(500).json({mailerror: err})
+            return console.log(error);
+          }
+          console.log('Message sent: %s', info.messageId);
+          // Preview only available when sending through an Ethereal account
+          console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+
+          // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
+          // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
+          return res.status(200).json({message_sent: info.messageId, preview_url: nodemailer.getTestMessageUrl(info)})
+      });
+  });
 })
 
 // authenticate a user
@@ -100,7 +175,7 @@ router.get('/:userId', (req, res, next) => {
   User.findById(id)
     .exec()
     .then(doc => {
-      if (doc.type === "Babysitter") {
+      if (doc.type === "babysitter") {
         res.status(200).json(doc)
       } else {
         res.status(404).json({message: 'no babysitter found'})
