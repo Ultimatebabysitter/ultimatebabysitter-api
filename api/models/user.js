@@ -15,13 +15,15 @@ const userSchema = mongoose.Schema({
   city: {type: String, required: true },
   state: {type: String, required: true },
   zip: {type: String, required: true },
-  type: { type: String, required: true, enum: ['Parent', 'Babysitter'] },
+  type: { type: String, required: true, enum: ['parent', 'babysitter', 'admin'] },
   pay: Number,
   details: String,
   date: { type: Date, default: Date.now },
   verification: String,
   reports: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Report' }],
-  password: { type: String, required: true }
+  password: { type: String, required: true },
+  status: { type: String },
+  temp: { type: String }
 })
 
 module.exports = mongoose.model('User', userSchema)
