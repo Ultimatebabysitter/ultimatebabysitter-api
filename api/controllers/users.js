@@ -68,3 +68,15 @@ exports.user_create = (req, res, next) => {
       res.status(500).json({error: err})
     })
 }
+
+exports.user_validate = (req, res, next) => {
+  const temp = req.params.temp
+  User.find({'temp': temp})
+    .exec()
+    .then(doc => {
+      res.status(200).json(doc)
+    })
+    .catch(err => {
+      res.status(500).json({error: err})
+    })
+}

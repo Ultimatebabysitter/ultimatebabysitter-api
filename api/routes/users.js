@@ -67,6 +67,9 @@ router.get('/', (req, res, next) => {
     })
 })
 
+// validate a user
+router.get('/validate/:temp', orderController.user_validate)
+
 // get a specific user
 router.get('/:userId', (req, res, next) => {
   const id = req.params.userId
