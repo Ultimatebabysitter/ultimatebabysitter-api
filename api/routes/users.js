@@ -36,83 +36,43 @@ router.post('/', (req, res, next) => {
     .then(result => {
       if (result) {
         console.log(result);
-        const transporter = nodemailer.createTransport({
+        nodemailer.createTestAccount((err, account) => {
+          const transporter = nodemailer.createTransport({
             host: 'smtp.ethereal.email',
             port: 587,
             auth: {
-                user: process.env.ETHEREAL_EMAIL,
-                pass: process.env.ETHEREAL_PASSWORD
+              user: process.env.ETHEREAL_EMAIL,
+              pass: process.env.ETHEREAL_PASSWORD
             }
-        });
-
-        let mailOptions = {
-            from: '"User mail" <foo@example.com>', // sender address
-            to: 'bar@example.com, baz@example.com', // list of receivers
-            subject: 'Hello ✔', // Subject line
-            text: 'Hello world?', // plain text body
-            html: '<h3>User email</h3>' // html body
-        };
-
-        transporter.sendMail(mailOptions, (error, info) => {
+          });
+          const verificationURL = req.protocol + '://' + req.get('host') + '/users/validate/' + result.temp
+          const mailOptions = {
+            from: '"User mail" <foo@example.com>',
+            to: result.email,
+            subject: 'UltimateBabysitter Account Verification',
+            html: '<h3>Verify your email</h3>' +
+                  '<p>Click this link to verify your account: <a href="' + verificationURL + '">' + verificationURL + '</a></p>'
+          }
+          transporter.sendMail(mailOptions, (error, info) => {
             if (error) {
-              // res.status(500).json({mailerror: err})
               return console.log(error);
             }
             console.log('Message sent: %s', info.messageId);
-            // Preview only available when sending through an Ethereal account
             console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
-
-            // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
-            // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
             return res.status(201).json({
               message: 'handling POST request to /users',
               message_sent: info.messageId,
               preview_url: nodemailer.getTestMessageUrl(info),
               user: result
             })
-        });
+          })
+        })
 
       }
     })
     .catch(err => {
       res.status(500).json({error: err})
     })
-})
-
-router.get('/testmail', (req, res, next) => {
-  nodemailer.createTestAccount((err, account) => {
-      const transporter = nodemailer.createTransport({
-          host: 'smtp.ethereal.email',
-          port: 587,
-          auth: {
-              user: process.env.ETHEREAL_EMAIL,
-              pass: process.env.ETHEREAL_PASSWORD
-          }
-      });
-
-      let mailOptions = {
-          from: '"Fred Foo 👻" <foo@example.com>', // sender address
-          to: 'bar@example.com, baz@example.com', // list of receivers
-          subject: 'Hello ✔', // Subject line
-          text: 'Hello world?', // plain text body
-          html: '<b>Hello world?</b>' // html body
-      };
-
-      // send mail with defined transport object
-      transporter.sendMail(mailOptions, (error, info) => {
-          if (error) {
-            // res.status(500).json({mailerror: err})
-            return console.log(error);
-          }
-          console.log('Message sent: %s', info.messageId);
-          // Preview only available when sending through an Ethereal account
-          console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
-
-          // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
-          // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
-          return res.status(200).json({message_sent: info.messageId, preview_url: nodemailer.getTestMessageUrl(info)})
-      });
-  });
 })
 
 // authenticate a user
@@ -242,6 +202,54 @@ router.get('/distance/:distance', userAuthenticate, (req, res, next) => {
     .catch(err => {
       res.status(500).json({error: err})
     })
+})
+
+router.post('/testmail', (req, res, next) => {
+  nodemailer.createTestAccount((err, account) => {
+    const transporter = nodemailer.createTransport({
+      host: 'smtp.ethereal.email',
+      port: 587,
+      auth: {
+        user: process.env.ETHEREAL_EMAIL,
+        pass: process.env.ETHEREAL_PASSWORD
+      }
+    })
+    const tempHash = randomstring.generate()
+    const verificationURL = req.protocol + '://' + req.get('host') + 'users/validate/' + tempHash
+    console.log(verificationURL)
+    const mailOptions = {
+      from: '"User mail" <foo@example.com>', // sender address
+      to: 'bar@example.com, baz@example.com', // list of receivers
+      subject: 'Hello ✔', // Subject line
+      text: 'Hello world?', // plain text body
+      html: '<h3>Verify your email</h3>' +
+            '<p>Click this link to verify your account: ' + verificationURL + '</p>'
+    }
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        return console.log(error)
+      }
+      console.log('Message sent: %s', info.messageId)
+      console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info))
+      res.status(201).json({
+        message: 'handling POST request to /users',
+        message_sent: info.messageId,
+        preview_url: nodemailer.getTestMessageUrl(info),
+        user: "result"
+      })
+    })
+  })
+  // .then(
+  //   res.status(201).json({
+  //     message: 'handling POST request to /users',
+  //     message_sent: info.messageId,
+  //     preview_url: nodemailer.getTestMessageUrl(info),
+  //     user: "result"
+  //   })
+  // )
+  // .catch(err => {
+  //   res.status(500).json({error: err})
+  // })
 })
 
 module.exports = router
