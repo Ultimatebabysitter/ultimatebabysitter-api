@@ -11,7 +11,11 @@ const reportRoutes = require('./api/routes/reports.js')
 const ratingRoutes = require('./api/routes/ratings.js')
 
 // connect to mongodb
-mongoose.connect(process.env.MONGODB_HOST)
+if (process.env.HEROKU) {
+  mongoose.connect(process.env.MONGODB_URI)
+} else {
+  mongoose.connect(process.env.MONGODB_HOST)
+}
 
 // misc
 app.use(morgan('dev'))
