@@ -6,39 +6,10 @@ const passwordHash = require('password-hash')
 const zipcodes = require('zipcodes')
 const jwt = require('jsonwebtoken')
 const userAuthenticate = require('../middleware/user-authentication')
+const orderController = require('../controllers/users')
 
 // create a user account
-router.post('/', (req, res, next) => {
-  const user = User({
-    _id: new mongoose.Types.ObjectId(),
-    first_name: req.body.first_name,
-    last_name: req.body.last_name,
-    email: req.body.email,
-    age: req.body.age,
-    address1: req.body.address1,
-    address2: req.body.address2,
-    city: req.body.city,
-    state: req.body.state,
-    zip: req.body.zip,
-    type: req.body.type,
-    pay: req.body.pay,
-    details: req.body.details,
-    verification: req.body.verification,
-    reports: req.body.report,
-    password: passwordHash.generate(req.body.password)
-  })
-  user
-    .save()
-    .then(result => {
-      res.status(201).json({
-        message: 'handling POST request to /users',
-        user: result
-      })
-    })
-    .catch(err => {
-      res.status(500).json({error: err})
-    })
-})
+router.post('/', orderController.user_create)
 
 // authenticate a user
 router.post('/authenticate', (req, res, next) => {
