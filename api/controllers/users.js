@@ -2,6 +2,7 @@ const User = require('../models/user.js')
 const mongoose = require('mongoose')
 const randomstring = require('randomstring')
 const passwordHash = require('password-hash')
+const jwt = require('jsonwebtoken')
 
 exports.user_create = (req, res, next) => {
   const user = User({
@@ -29,6 +30,34 @@ exports.user_create = (req, res, next) => {
         message: 'handling POST request to /users',
         user: result
       })
+    })
+    .catch(err => {
+      res.status(500).json({error: err})
+    })
+}
+
+exports.user_authenticate = (req, res, next) => {
+  User.find({email: req.body.email})
+    .exec()
+    .then(user => {
+      if (user.length < 1) {
+        return res.status(401).json({message: 'auth failed'})
+      }
+      console.log(user[0])
+      var hashedPassword = user[0].password
+
+      if (passwordHash.verify(req.body.password, hashedPassword)) {
+        const token = jwt.sign({
+          email: user[0].email,
+          zip: user[0].zip,
+          userId: user[0]._id
+        }, process.env.JWT_KEY, {expiresIn: '1h'})
+        return res.status(200).json({
+          message: 'auth worked',
+          token: token
+        })
+      }
+      res.status(401).json({message: 'auth failed'})
     })
     .catch(err => {
       res.status(500).json({error: err})

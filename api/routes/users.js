@@ -2,9 +2,7 @@ const express = require('express')
 const router = express.Router()
 const mongoose = require('mongoose') //
 const User = require('../models/user') //
-const passwordHash = require('password-hash') //
 const zipcodes = require('zipcodes')
-const jwt = require('jsonwebtoken')
 const userAuthenticate = require('../middleware/user-authentication')
 const orderController = require('../controllers/users')
 
@@ -12,31 +10,7 @@ const orderController = require('../controllers/users')
 router.post('/', orderController.user_create)
 
 // authenticate a user
-router.post('/authenticate', (req, res, next) => {
-  User.find({email: req.body.email})
-    .exec()
-    .then(user => {
-      if (user.length < 1) {
-        return res.status(401).json({message: 'auth failed'})
-      }
-      var hashedPassword = user[0].password
-      if (passwordHash.verify(req.body.password, hashedPassword)) {
-        const token = jwt.sign({
-          email: user[0].email,
-          zip: user[0].zip,
-          userId: user[0]._id
-        }, process.env.JWT_KEY, {expiresIn: '1h'})
-        return res.status(200).json({
-          message: 'auth worked',
-          token: token
-        })
-      }
-      res.status(401).json({message: 'auth failed'})
-    })
-    .catch(err => {
-      res.status(500).json({error: err})
-    })
-})
+router.post('/authenticate', orderController.user_authenticate)
 
 // return a list of users
 router.get('/', (req, res, next) => {
