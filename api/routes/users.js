@@ -6,8 +6,6 @@ const passwordHash = require('password-hash') //
 const zipcodes = require('zipcodes')
 const jwt = require('jsonwebtoken')
 const userAuthenticate = require('../middleware/user-authentication')
-const randomstring = require('randomstring') //
-const nodemailer = require('nodemailer') //
 const orderController = require('../controllers/users')
 
 // create a user account

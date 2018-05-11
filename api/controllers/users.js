@@ -2,7 +2,10 @@ const User = require('../models/user.js')
 const mongoose = require('mongoose')
 const randomstring = require('randomstring')
 const passwordHash = require('password-hash')
+<<<<<<< HEAD
 const nodemailer = require('nodemailer')
+=======
+>>>>>>> remove_email
 
 exports.user_create = (req, res, next) => {
   const user = User({
@@ -21,13 +24,18 @@ exports.user_create = (req, res, next) => {
     details: req.body.details,
     verification: req.body.verification,
     reports: req.body.report,
+<<<<<<< HEAD
     password: passwordHash.generate(req.body.password),
     status: 'pending',
     temp: randomstring.generate()
+=======
+    password: passwordHash.generate(req.body.password)
+>>>>>>> remove_email
   })
   user
     .save()
     .then(result => {
+<<<<<<< HEAD
       if (result) {
         console.log(result);
         nodemailer.createTestAccount((err, account) => {
@@ -63,6 +71,12 @@ exports.user_create = (req, res, next) => {
         })
 
       }
+=======
+      res.status(201).json({
+        message: 'handling POST request to /users',
+        user: result
+      })
+>>>>>>> remove_email
     })
     .catch(err => {
       res.status(500).json({error: err})
