@@ -2,10 +2,6 @@ const User = require('../models/user.js')
 const mongoose = require('mongoose')
 const randomstring = require('randomstring')
 const passwordHash = require('password-hash')
-<<<<<<< HEAD
-const nodemailer = require('nodemailer')
-=======
->>>>>>> remove_email
 
 exports.user_create = (req, res, next) => {
   const user = User({
@@ -24,59 +20,15 @@ exports.user_create = (req, res, next) => {
     details: req.body.details,
     verification: req.body.verification,
     reports: req.body.report,
-<<<<<<< HEAD
-    password: passwordHash.generate(req.body.password),
-    status: 'pending',
-    temp: randomstring.generate()
-=======
     password: passwordHash.generate(req.body.password)
->>>>>>> remove_email
   })
   user
     .save()
     .then(result => {
-<<<<<<< HEAD
-      if (result) {
-        console.log(result);
-        nodemailer.createTestAccount((err, account) => {
-          const transporter = nodemailer.createTransport({
-            host: 'smtp.ethereal.email',
-            port: 587,
-            auth: {
-              user: process.env.ETHEREAL_EMAIL,
-              pass: process.env.ETHEREAL_PASSWORD
-            }
-          });
-          const verificationURL = req.protocol + '://' + req.get('host') + '/users/validate/' + result.temp
-          const mailOptions = {
-            from: '"User mail" <foo@example.com>',
-            to: result.email,
-            subject: 'UltimateBabysitter Account Verification',
-            html: '<h3>Verify your email</h3>' +
-                  '<p>Click this link to verify your account: <a href="' + verificationURL + '">' + verificationURL + '</a></p>'
-          }
-          transporter.sendMail(mailOptions, (error, info) => {
-            if (error) {
-              return console.log(error);
-            }
-            console.log('Message sent: %s', info.messageId);
-            console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
-            return res.status(201).json({
-              message: 'handling POST request to /users',
-              message_sent: info.messageId,
-              preview_url: nodemailer.getTestMessageUrl(info),
-              user: result
-            })
-          })
-        })
-
-      }
-=======
       res.status(201).json({
         message: 'handling POST request to /users',
         user: result
       })
->>>>>>> remove_email
     })
     .catch(err => {
       res.status(500).json({error: err})
