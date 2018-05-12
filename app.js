@@ -10,12 +10,22 @@ const userRoutes = require('./api/routes/users.js')
 const reportRoutes = require('./api/routes/reports.js')
 const ratingRoutes = require('./api/routes/ratings.js')
 
+// config
+const config = require('./_config')
+
 // connect to mongodb
-if (process.env.HEROKU) {
-  mongoose.connect(process.env.MONGODB_URI)
-} else {
-  mongoose.connect(process.env.MONGODB_HOST)
-}
+// if (process.env.HEROKU) {
+//   mongoose.connect(process.env.MONGODB_URI)
+// } else {
+//   mongoose.connect(process.env.MONGODB_HOST)
+// }
+mongoose.connect(config.mongoURI[app.settings.env], function(err, res) {
+  if (err) {
+    console.log('Error connecting to the database. ' + err)
+  } else {
+    console.log('Connected to Database: ' + config.mongoURI[app.settings.env])
+  }
+})
 
 // misc
 app.use(morgan('dev'))
