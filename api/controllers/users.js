@@ -52,7 +52,7 @@ exports.user_authenticate = (req, res, next) => {
           zip: user[0].zip,
           userId: user[0]._id
         }, process.env.JWT_KEY, {expiresIn: '1h'})
-        return res.status(200).json({
+        return res.status(201).json({
           message: 'auth worked',
           token: token
         })

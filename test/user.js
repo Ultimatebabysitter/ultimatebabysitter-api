@@ -41,7 +41,7 @@ describe('User Tests\n', () => {
       	"verification": "NULL",
         "password": "JU&^%Slkjl8ijoij8jij3oa"
       })
-      .end(function(err, res){
+      .end(function(err, res) {
         res.should.have.status(201)
         res.should.be.json
         res.body.should.be.a('object')
@@ -52,6 +52,19 @@ describe('User Tests\n', () => {
         res.body.user.should.have.property('_id')
         res.body.user.first_name.should.equal('Albert')
         res.body.user.last_name.should.equal('Einstein')
+        done()
+      })
+  })
+
+  it('should authenticate user on /users/authenticate POST', function(done) {
+    chai.request(server)
+      .post('/users/authenticate')
+      .send({"email": "einstein.fake@gmail.com", "password": "JU&^%Slkjl8ijoij8jij3oa"})
+      .end(function(err, res) {
+        // console.log(res)
+        res.should.have.status(201)
+        res.should.be.json
+        res.body.message.should.equal('auth worked')
         done()
       })
   })
