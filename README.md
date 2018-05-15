@@ -6,7 +6,7 @@ UltimateBabysitter is an open-source application to help find babysitters.
 1. Clone the repository locally.
 2. Run `npm install`
 3. Run `npm start`
-4. Go to http://127.0.0.1:3000
+4. Go to http://127.0.0.1:3000/users
 
 ## Requirements
 1. MongoDB running on your local machine. https://docs.mongodb.com/manual/installation/
