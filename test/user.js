@@ -4,57 +4,58 @@ let chai = require('chai')
 let chaiHttp = require('chai-http')
 let server = require('../app')
 let should = chai.should()
-let expect = chai.expect
+let User = require("../api/models/user")
 
 chai.use(chaiHttp)
 
-describe('Users', () => {
-  it('should list ALL blobs on /blobs GET', function(done) {
+describe('Users', function() {
+
+  User.collection.drop()
+
+  describe('Users', () => {
+    it('should list ALL users on /users GET', function(done) {
+      chai.request(server)
+        .get('/users')
+        .end(function(err, res){
+          res.should.have.status(200)
+          res.should.be.json
+          res.body.users.should.be.a('array')
+          done()
+        })
+    })
+  })
+
+  it('should add a SINGLE user on /users POST', function(done) {
     chai.request(server)
-      .get('/users')
+      .post('/users')
+      .send({"first_name": "Bertrand",
+        "last_name": "Russell",
+        "email": "brussel.sprout.fake@gmail.com",
+        "age": 35,
+        "address1": "12345 Mockingbird Ln",
+      	"address2": "",
+      	"city": "Wesley Chapel",
+      	"state": "FL",
+      	"zip": "33543",
+        "type": "admin",
+        "pay": 0,
+      	"details": "admin account",
+      	"verification": "NULL",
+      	"password": "JU&^%Slkjlkjelskjdf3oa"
+      })
       .end(function(err, res){
-        res.should.have.status(200)
+        res.should.have.status(201)
+        res.should.be.json
+        res.body.should.be.a('object')
+        res.body.should.have.property('user')
+        res.body.user.should.be.a('object')
+        res.body.user.should.have.property('first_name')
+        res.body.user.should.have.property('last_name')
+        res.body.user.should.have.property('_id')
+        res.body.user.first_name.should.equal('Bertrand')
+        res.body.user.last_name.should.equal('Russell')
         done()
       })
   })
-})
-  // Test the /GET route
-  // describe('/GET users', () => {
-  //   it('it should GET all the users', (done) => {
-  //     chai.request(server)
-  //         .get('/users')
-  //         .end((err, res) => {
-  //           res.should.have.status(200)
-  //           done()
-  //         })
-  //   })
-  // })
 
-  // Test the /POST route
-  // todo test the creation of a user
-  // let userSample = {
-  //   'first_name': 'Bertrand',
-  //   'last_name': 'Russell',
-  //   'email': 'brussel@brussel.com',
-  //   'age': 70,
-  //   'location': '123 mockingbird lane',
-  //   'type': 'parent',
-  //   'pay': 0,
-  // 	'details': 'Looking for a babysitter',
-  // 	'verification': 'NULL',
-  // 	'report': false
-  // }
-  // describe('/POST users', () => {
-  //   it('it should POST a user', (done) => {
-  //     chai.request(server)
-  //       .post('/users')
-  //       // .send(userSample)
-  //       .end((err, res) => {
-  //         res.should.have.status(201)
-  //         res.body.user.should.be.an('object')
-  //         // expect(res.body.user).to.have.all.keys('first_name', 'last_name', 'email', 'age', 'location', 'type', 'pay', 'details', 'verification', 'report');
-  //         done()
-  //       })
-  //   })
-  // })
-// })
+})
