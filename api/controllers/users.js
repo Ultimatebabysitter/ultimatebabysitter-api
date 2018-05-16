@@ -43,9 +43,7 @@ exports.user_authenticate = (req, res, next) => {
       if (user.length < 1) {
         return res.status(401).json({message: 'auth failed'})
       }
-      console.log(user[0])
       var hashedPassword = user[0].password
-
       if (passwordHash.verify(req.body.password, hashedPassword)) {
         const token = jwt.sign({
           email: user[0].email,

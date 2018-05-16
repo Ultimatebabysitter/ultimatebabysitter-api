@@ -61,7 +61,6 @@ describe('User Tests\n', () => {
       .post('/users/authenticate')
       .send({"email": "einstein.fake@gmail.com", "password": "JU&^%Slkjl8ijoij8jij3oa"})
       .end(function(err, res) {
-        // console.log(res)
         res.should.have.status(201)
         res.should.be.json
         res.body.message.should.equal('auth worked')
