@@ -13,34 +13,7 @@ router.post('/', orderController.user_create)
 router.post('/authenticate', orderController.user_authenticate)
 
 // return a list of users
-router.get('/', (req, res, next) => {
-  User.find()
-    .select('email zip _id')
-    .exec()
-    .then(docs => {
-      const response = {
-        count: docs.length,
-        users: docs.map(doc => {
-          return {
-            email: doc.email,
-            zip: doc.zip,
-            _id: doc._id,
-            response: {
-              type: 'GET',
-              url: req.protocol + '://' + req.get('host') + req.originalUrl + '/' + doc._id
-            }
-          }
-        })
-      }
-      res.status(200).json(response)
-    })
-    .catch(err => {
-      res.status(500).json({error: err})
-    })
-})
-
-// validate a user
-router.get('/validate/:temp', orderController.user_validate)
+router.get('/', orderController.user_list)
 
 // get a specific user
 router.get('/:userId', (req, res, next) => {

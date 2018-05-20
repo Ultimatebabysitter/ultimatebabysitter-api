@@ -12,17 +12,6 @@ describe('User Tests\n', () => {
 
   User.collection.drop()
 
-  it('should list ALL users on /users GET', function(done) {
-    chai.request(server)
-      .get('/users')
-      .end(function(err, res){
-        res.should.have.status(200)
-        res.should.be.json
-        res.body.users.should.be.a('array')
-        done()
-      })
-  })
-
   it('should add a SINGLE user on /users POST', function(done) {
     chai.request(server)
       .post('/users')
@@ -64,6 +53,17 @@ describe('User Tests\n', () => {
         res.should.have.status(201)
         res.should.be.json
         res.body.message.should.equal('auth worked')
+        done()
+      })
+  })
+
+  it('should list ALL users on /users GET', function(done) {
+    chai.request(server)
+      .get('/users')
+      .end(function(err, res){
+        res.should.have.status(200)
+        res.should.be.json
+        res.body.users.should.be.a('array')
         done()
       })
   })

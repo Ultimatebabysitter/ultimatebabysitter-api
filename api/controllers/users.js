@@ -62,6 +62,32 @@ exports.user_authenticate = (req, res, next) => {
     })
 }
 
+exports.user_list = (req, res, next) => {
+  User.find()
+    .select('email zip _id')
+    .exec()
+    .then(docs => {
+      const response = {
+        count: docs.length,
+        users: docs.map(doc => {
+          return {
+            email: doc.email,
+            zip: doc.zip,
+            _id: doc._id,
+            response: {
+              type: 'GET',
+              url: req.protocol + '://' + req.get('host') + req.originalUrl + '/' + doc._id
+            }
+          }
+        })
+      }
+      res.status(200).json(response)
+    })
+    .catch(err => {
+      res.status(500).json({error: err})
+    })
+}
+
 exports.user_validate = (req, res, next) => {
   const temp = req.params.temp
   User.find({'temp': temp})
