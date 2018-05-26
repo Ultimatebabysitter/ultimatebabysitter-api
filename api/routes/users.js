@@ -1,10 +1,7 @@
 const express = require('express')
 const router = express.Router()
-// const mongoose = require('mongoose') //
-// const User = require('../models/user') //
-// const zipcodes = require('zipcodes')
-// const userAuthenticate = require('../middleware/user-authentication')
 const orderController = require('../controllers/users')
+const userAuthenticate = require('../middleware/user-authentication')
 
 // create a user account
 router.post('/', orderController.user_create)
@@ -19,7 +16,7 @@ router.get('/', orderController.user_list)
 router.get('/:userId', orderController.single_user)
 
 // update a specific user
-router.patch('/:userId', orderController.update_user)
+router.patch('/:userId', userAuthenticate, orderController.update_user)
 
 // delete a specific user
 router.delete('/:userId', orderController.delete_user)
