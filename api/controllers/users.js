@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken')
 const zipcodes = require('zipcodes')
 
 // create a user
-exports.user_create = (req, res, next) => {
+exports.create_user = (req, res, next) => {
   const user = User({
     _id: new mongoose.Types.ObjectId(),
     first_name: req.body.first_name,
@@ -38,7 +38,7 @@ exports.user_create = (req, res, next) => {
 }
 
 // authenticate a user
-exports.user_authenticate = (req, res, next) => {
+exports.authenticate_user = (req, res, next) => {
   User.find({email: req.body.email})
     .exec()
     .then(user => {
@@ -64,8 +64,8 @@ exports.user_authenticate = (req, res, next) => {
     })
 }
 
-// get list of all users
-exports.user_list = (req, res, next) => {
+// get a list of users
+exports.list_users = (req, res, next) => {
   User.find()
     .select('email zip _id')
     .exec()
@@ -91,7 +91,7 @@ exports.user_list = (req, res, next) => {
     })
 }
 
-// get a single user
+// get a user
 exports.single_user = (req, res, next) => {
   const id = req.params.userId
   User.findById(id)
@@ -108,7 +108,7 @@ exports.single_user = (req, res, next) => {
     })
 }
 
-// update a single user
+// update a user
 exports.update_user = (req, res, next) => {
   const id = req.params.userId
   const updateOps = {}
@@ -128,8 +128,6 @@ exports.update_user = (req, res, next) => {
 // delete a user
 exports.delete_user = (req, res, next) => {
   const id = req.params.userId
-  // if (req.userData._id === req.params.userId || req.userData.type === "admin") {}
-  // res.status(500).json({error: "auth failed"})
   User.remove({ _id: id })
     .exec()
     .then(result => {
@@ -140,7 +138,7 @@ exports.delete_user = (req, res, next) => {
     })
 }
 
-// get nearby users
+// get users by distance in relation to authenticated user
 exports.find_users = (req, res, next) => {
   const distance = req.params.distance
   const nearbyZipcodes = zipcodes.radius(req.userData.zip, distance)
