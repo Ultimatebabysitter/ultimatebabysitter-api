@@ -111,15 +111,6 @@ exports.single_user = (req, res, next) => {
 }
 
 // update a single user
-/*
-Sample request body to update age:
-[
-    {
-    	"propName": "age",
-    	"value": 34
-    }
-]
-*/
 exports.update_user = (req, res, next) => {
   const id = req.params.userId
   const updateOps = {}
@@ -139,7 +130,6 @@ exports.update_user = (req, res, next) => {
 // delete a user
 exports.delete_user = (req, res, next) => {
   const id = req.params.userId
-  console.log(id);
   // if (req.userData._id === req.params.userId || req.userData.type === "admin") {}
   // res.status(500).json({error: "auth failed"})
   User.remove({ _id: id })

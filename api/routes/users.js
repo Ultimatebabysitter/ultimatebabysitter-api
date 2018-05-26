@@ -16,6 +16,16 @@ router.get('/', orderController.user_list)
 router.get('/:userId', orderController.single_user)
 
 // update a specific user
+/*
+Sample request body to update age:
+[
+    {
+    	"propName": "age",
+    	"value": 34
+    }
+]
+Header: Authorization   Bearer TOKEN
+*/
 router.patch('/:userId', userAuthenticate, orderController.update_user)
 
 // delete a specific user
