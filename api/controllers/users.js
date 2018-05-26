@@ -1,10 +1,8 @@
 const User = require('../models/user.js')
 const mongoose = require('mongoose')
-const randomstring = require('randomstring')
 const passwordHash = require('password-hash')
 const jwt = require('jsonwebtoken')
 const zipcodes = require('zipcodes')
-const userAuthenticate = require('../middleware/user-authentication')
 
 // create a user
 exports.user_create = (req, res, next) => {
