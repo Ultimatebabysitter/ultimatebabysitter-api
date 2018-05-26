@@ -3,7 +3,10 @@ const mongoose = require('mongoose')
 const randomstring = require('randomstring')
 const passwordHash = require('password-hash')
 const jwt = require('jsonwebtoken')
+const zipcodes = require('zipcodes')
+const userAuthenticate = require('../middleware/user-authentication')
 
+// create a user
 exports.user_create = (req, res, next) => {
   const user = User({
     _id: new mongoose.Types.ObjectId(),
@@ -36,6 +39,7 @@ exports.user_create = (req, res, next) => {
     })
 }
 
+// authenticate a user
 exports.user_authenticate = (req, res, next) => {
   User.find({email: req.body.email})
     .exec()
@@ -62,6 +66,7 @@ exports.user_authenticate = (req, res, next) => {
     })
 }
 
+// get list of all users
 exports.user_list = (req, res, next) => {
   User.find()
     .select('email zip _id')
@@ -88,12 +93,84 @@ exports.user_list = (req, res, next) => {
     })
 }
 
-exports.user_validate = (req, res, next) => {
-  const temp = req.params.temp
-  User.find({'temp': temp})
+// get a single user
+exports.single_user = (req, res, next) => {
+  const id = req.params.userId
+  User.findById(id)
     .exec()
     .then(doc => {
-      res.status(200).json(doc)
+      if (doc.type === "babysitter") {
+        res.status(200).json(doc)
+      } else {
+        res.status(404).json({message: 'no babysitter found'})
+      }
+    })
+    .catch(err => {
+      res.status(500).json({error: err})
+    })
+}
+
+// update a single user
+/*
+Sample request body to update age:
+[
+    {
+    	"propName": "age",
+    	"value": 34
+    }
+]
+*/
+exports.update_user = (req, res, next) => {
+  const id = req.params.userId
+  const updateOps = {}
+  for (const ops of req.body) {
+    updateOps[ops.propName] = ops.value
+  }
+  User.update({ _id: id }, { $set: updateOps })
+    .exec()
+    .then(result => {
+      res.status(200).json(result)
+    })
+    .catch(err => {
+      res.status(500).json({error: err})
+    })
+}
+
+// delete a user
+exports.delete_user = (req, res, next) => {
+  const id = req.params.userId
+  console.log(id);
+  // if (req.userData._id === req.params.userId || req.userData.type === "admin") {}
+  // res.status(500).json({error: "auth failed"})
+  User.remove({ _id: id })
+    .exec()
+    .then(result => {
+      res.status(200).json(result)
+    })
+    .catch(err => {
+      res.status(500).json({error: err})
+    })
+}
+
+// get nearby users
+exports.find_users = (req, res, next) => {
+  const distance = req.params.distance
+  const nearbyZipcodes = zipcodes.radius(req.userData.zip, distance)
+  User.find({ 'zip': { $in: nearbyZipcodes} })
+    .exec()
+    .then(docs => {
+      const response = {
+        numberOfUsers: docs.length,
+        users: docs.map(doc => {
+          return {
+            name: doc.first_name,
+            zip: doc.zip,
+            email: doc.email
+          }
+        }),
+        nearbyZipcodes: nearbyZipcodes
+      }
+      res.status(200).json(response)
     })
     .catch(err => {
       res.status(500).json({error: err})
