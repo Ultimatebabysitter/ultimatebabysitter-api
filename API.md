@@ -22,19 +22,23 @@
 
   * **Code:** 200 <br />
     **Content:**
-    `{
+    ```
+    {
       "n": 1,
       "nModified": 1,
       "ok": 1
-    }`
+    }
+    ```
 
 * **Error Response:**
 
   * **Code:** 401 UNAUTHORIZED <br />
     **Content:**
-    `{
+    ```
+    {
       "message": "auth failed"
-    }`
+    }
+    ```
 
 * **Sample Call:**
 
