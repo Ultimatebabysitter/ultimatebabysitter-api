@@ -4,7 +4,7 @@
   "description": "Open source babysitting app.",
   "main": "index.js",
   "scripts": {
-    "test": "nodemon --watch . --exec 'mocha --exit'",
+    "test": "nodemon --watch . --exec \"mocha --exit\"",
     "start": "nodemon app.js",
     "mongolocal": "mongo --host 127.0.0.1:27017",
     "standard": "standard",

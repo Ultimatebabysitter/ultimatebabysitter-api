@@ -24,7 +24,7 @@ describe('User Tests\n', () => {
         "city": "Tampa",
         "state": "FL",
         "zip": "33609",
-        "type": "admin",
+        "type": "babysitter",
         "pay": 0,
       	"details": "admin account",
       	"verification": "NULL",
@@ -43,6 +43,24 @@ describe('User Tests\n', () => {
         res.body.user.last_name.should.equal('Einstein')
         done()
       })
+  })
+
+  it('should get a user on /users/:userId', function(done) {
+    User.findOne({ 'last_name': 'Einstein' }, '_id', function (err, user) {
+      if (err) return handleError(err)
+      chai.request(server)
+        .get('/users/' + user._id)
+        .end(function(err, res) {
+          res.should.have.status(200)
+          res.should.be.json
+          res.body.should.have.property('first_name')
+          res.body.should.have.property('last_name')
+          res.body.should.have.property('_id')
+          res.body.first_name.should.equal('Albert')
+          res.body.last_name.should.equal('Einstein')
+          done()
+        })
+    })
   })
 
   it('should authenticate user on /users/authenticate POST', function(done) {
