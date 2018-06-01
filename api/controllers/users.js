@@ -97,7 +97,7 @@ exports.single_user = (req, res, next) => {
   User.findById(id)
     .exec()
     .then(doc => {
-      if (doc.type === "babysitter") {
+      if (doc.type === 'babysitter') {
         res.status(200).json(doc)
       } else {
         res.status(404).json({message: 'no babysitter found'})

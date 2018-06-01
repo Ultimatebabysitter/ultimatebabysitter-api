@@ -19,7 +19,7 @@ const config = require('./_config')
 // } else {
 //   mongoose.connect(process.env.MONGODB_HOST)
 // }
-mongoose.connect(config.mongoURI[app.settings.env], function(err, res) {
+mongoose.connect(config.mongoURI[app.settings.env], function (err, res) {
   if (err) {
     console.log('Error connecting to the database. ' + err)
   } else {
