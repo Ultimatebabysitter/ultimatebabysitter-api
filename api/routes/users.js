@@ -22,6 +22,6 @@ router.post('/authenticate', orderController.authenticate_user)
 router.get('/', orderController.list_users)
 
 // get users by distance in relation to authenticated user
-router.get('/distance/:distance', orderController.find_users)
+router.get('/distance/:distance', userAuthenticate, orderController.find_users)
 
 module.exports = router

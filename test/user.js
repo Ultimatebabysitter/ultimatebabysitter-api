@@ -1,10 +1,11 @@
 process.env.NODE_ENV = 'test'
 
-let chai = require('chai')
-let chaiHttp = require('chai-http')
-let server = require('../app')
-let should = chai.should()
-let User = require("../api/models/user")
+const chai = require('chai')
+const chaiHttp = require('chai-http')
+const server = require('../app')
+const should = chai.should()
+const User = require("../api/models/user")
+let token
 
 chai.use(chaiHttp)
 
@@ -86,6 +87,7 @@ describe('User Tests\n', () => {
       .post('/users/authenticate')
       .send({"email": "einstein.fake@gmail.com", "password": "JU&^%Slkjl8ijoij8jij3oa"})
       .end(function(err, res) {
+        token = res.body.token
         res.should.have.status(201)
         res.should.be.json
         res.body.message.should.equal('auth worked')
@@ -98,7 +100,7 @@ describe('User Tests\n', () => {
       if (err) return handleError(err)
       chai.request(server)
         .patch('/users/' + user._id)
-        .set('Authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVpbnN0ZWluLmZha2VAZ21haWwuY29tIiwiemlwIjoiMzM2MDkiLCJ1c2VySWQiOiI1YjEwNWRiNTM2ZmVjMjEzOTNlY2VmZDgiLCJpYXQiOjE1Mjc3OTkyMjEsImV4cCI6MTUyNzgwMjgyMX0.MK3BiITthNNYecF_rAEanaff5aCc2KlTzd84pkyAi2s')
+        .set('Authorization', 'Bearer ' + token)
         .send([
           {
             "propName": "age",
@@ -114,7 +116,14 @@ describe('User Tests\n', () => {
   })
 
   it('should find users within a certain distance on the /users/distance/:distance GET', function(done) {
-    done()
+    chai.request(server)
+      .get('/users/distance/10')
+      .set('Authorization', 'Bearer ' + token)
+      .end(function(err, res) {
+        res.should.have.status(200)
+        res.should.be.json
+        done()
+      })
   })
 
   it('should list ALL users on /users GET', function(done) {
