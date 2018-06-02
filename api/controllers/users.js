@@ -28,7 +28,6 @@ exports.create_user = (req, res, next) => {
     .save()
     .then(result => {
       res.status(201).json({
-        message: 'handling POST request to /users',
         user: result
       })
     })
