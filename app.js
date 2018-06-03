@@ -5,6 +5,8 @@ const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
 const http = require('http')
 
+require('dotenv').config()
+
 // routes
 const userRoutes = require('./api/routes/users.js')
 const reportRoutes = require('./api/routes/reports.js')

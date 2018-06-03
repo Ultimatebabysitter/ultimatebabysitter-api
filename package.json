@@ -4,8 +4,10 @@
   "description": "Open source babysitting app.",
   "main": "index.js",
   "scripts": {
-    "test": "nodemon --watch . --exec \"mocha --exit\"",
-    "start": "nodemon app.js",
+    "start": "app.js",
+    "test": "mocha --exit",
+    "test-nodemon": "nodemon --watch . --exec \"mocha --exit\"",
+    "start-nodemon": "nodemon app.js",
     "mongolocal": "mongo --host 127.0.0.1:27017",
     "standard": "standard",
     "standard-fix": "standard --fix"
@@ -14,6 +16,7 @@
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.18.3",
+    "dotenv": "^6.0.0",
     "express": "^4.16.3",
     "jsonwebtoken": "^8.2.2",
     "mongoose": "^5.1.3",
