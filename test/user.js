@@ -1,5 +1,7 @@
 process.env.NODE_ENV = 'test'
 
+require('dotenv').config()
+
 const chai = require('chai')
 const chaiHttp = require('chai-http')
 const server = require('../app')
