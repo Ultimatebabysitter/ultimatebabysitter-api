@@ -7,21 +7,8 @@ const zipcodes = require('zipcodes')
 // create a user
 exports.create_user = (req, res, next) => {
   const user = User({
+    ...req.body,
     _id: new mongoose.Types.ObjectId(),
-    first_name: req.body.first_name,
-    last_name: req.body.last_name,
-    email: req.body.email,
-    age: req.body.age,
-    address1: req.body.address1,
-    address2: req.body.address2,
-    city: req.body.city,
-    state: req.body.state,
-    zip: req.body.zip,
-    type: req.body.type,
-    pay: req.body.pay,
-    details: req.body.details,
-    verification: req.body.verification,
-    reports: req.body.report,
     password: passwordHash.generate(req.body.password)
   })
   user
