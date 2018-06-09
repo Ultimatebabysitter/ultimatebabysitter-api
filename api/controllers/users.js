@@ -128,7 +128,7 @@ exports.delete_user = (req, res, next) => {
 exports.find_users = (req, res, next) => {
   const distance = req.params.distance
   const nearbyZipcodes = zipcodes.radius(req.userData.zip, distance)
-  User.find({ 'zip': { $in: nearbyZipcodes} })
+  User.find({ 'zip': { $in: nearbyZipcodes } })
     .exec()
     .then(docs => {
       const response = {
