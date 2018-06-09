@@ -191,15 +191,14 @@ describe('User Tests\n', () => {
   })
 
   it('should delete a user at /users/:userId DELETE', function (done) {
-    User.findOne({ 'last_name': 'Einstein' }, '_id', function (err, user) {
-      if (err) return handleError(err)
-      chai.request(server)
-        .delete('/users/' + user._id)
-        .end(function (err, res) {
-          res.should.have.status(200)
-          res.should.be.json
-          done()
-        })
-    })
+    chai.request(server)
+      .delete('/users/' + userId)
+      .set('Authorization', 'Bearer ' + token)
+      .end(function (err, res) {
+        res.should.have.status(200)
+        res.should.be.json
+        done()
+      })
   })
+
 })

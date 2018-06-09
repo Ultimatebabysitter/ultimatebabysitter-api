@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const orderController = require('../controllers/users')
 const userAuthenticate = require('../middleware/user-authentication')
+const permissions = require('../middleware/permissions')
 
 // create a user
 router.post('/', orderController.create_user)
@@ -10,10 +11,10 @@ router.post('/', orderController.create_user)
 router.get('/:userId', orderController.single_user)
 
 // update a user
-router.patch('/:userId', userAuthenticate, orderController.update_user)
+router.patch('/:userId', userAuthenticate, permissions, orderController.update_user)
 
 // delete a user
-router.delete('/:userId', orderController.delete_user)
+router.delete('/:userId', userAuthenticate, permissions, orderController.delete_user)
 
 // authenticate a user
 router.post('/authenticate', orderController.authenticate_user)
