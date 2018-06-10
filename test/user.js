@@ -9,6 +9,7 @@ const should = chai.should()
 const User = require('../api/models/user')
 let token
 let userId
+let otherUserId
 
 chai.use(chaiHttp)
 
@@ -34,6 +35,7 @@ describe('User Tests\n', () => {
         'password': 'JU&^%Slkjl8ijoij8jij3oa'
       })
       .end(function (err, res) {
+        otherUserId = res.body.user._id
         res.should.have.status(201)
         res.should.be.json
         res.body.should.be.a('object')
@@ -160,6 +162,23 @@ describe('User Tests\n', () => {
       })
   })
 
+  it('should FAIL to update the age of another user at /users/:userId PATCH', function (done) {
+    chai.request(server)
+      .patch('/users/' + otherUserId)
+      .set('Authorization', 'Bearer ' + token)
+      .send([
+        {
+          'propName': 'age',
+          'value': 26
+        }
+      ])
+      .end(function (err, res) {
+        res.should.have.status(401)
+        res.should.be.json
+        done()
+      })
+  })
+
   it('should find users within a certain distance at /users/distance/:distance GET', function (done) {
     chai.request(server)
       .get('/users/distance/25')
@@ -196,6 +215,17 @@ describe('User Tests\n', () => {
       .set('Authorization', 'Bearer ' + token)
       .end(function (err, res) {
         res.should.have.status(200)
+        res.should.be.json
+        done()
+      })
+  })
+
+  it('should FAIL to delete another user at /users/:userId DELETE', function (done) {
+    chai.request(server)
+      .delete('/users/' + otherUserId)
+      .set('Authorization', 'Bearer ' + token)
+      .end(function (err, res) {
+        res.should.have.status(401)
         res.should.be.json
         done()
       })
