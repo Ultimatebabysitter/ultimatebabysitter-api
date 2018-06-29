@@ -3,9 +3,10 @@ const router = express.Router()
 const orderController = require('../controllers/users')
 const userAuthenticate = require('../middleware/user-authentication')
 const permissions = require('../middleware/permissions')
+const userTypeCheck = require('../middleware/user-type-check')
 
 // create a user
-router.post('/', orderController.create_user)
+router.post('/', userTypeCheck, orderController.create_user)
 
 // get a user
 router.get('/:userId', orderController.single_user)
