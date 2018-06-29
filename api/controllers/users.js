@@ -54,7 +54,7 @@ exports.authenticate_user = (req, res, next) => {
 // get a list of users
 exports.list_users = (req, res, next) => {
   User.find()
-    .select('email zip _id')
+    .select('email zip type _id')
     .exec()
     .then(docs => {
       const response = {
@@ -63,6 +63,7 @@ exports.list_users = (req, res, next) => {
           return {
             email: doc.email,
             zip: doc.zip,
+            type: doc.type,
             _id: doc._id,
             response: {
               type: 'GET',
