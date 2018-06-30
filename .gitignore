@@ -2,3 +2,4 @@ node_modules/*
 local.txt
 .env
 nodemon.json
+*.log
