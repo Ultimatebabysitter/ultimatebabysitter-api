@@ -186,7 +186,7 @@ describe('User Tests\n', () => {
       .end(function (err, res) {
         res.should.have.status(200)
         res.should.be.json
-        res.body.numberOfUsers.should.equal(2)
+        res.body.numberOfUsers.should.equal(1)
         res.body.users[0].should.have.property('name')
         res.body.users[0].should.have.property('zip')
         res.body.users[0].should.have.property('email')
