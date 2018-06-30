@@ -65,10 +65,7 @@ exports.list_users = (req, res, next) => {
             zip: doc.zip,
             type: doc.type,
             _id: doc._id,
-            response: {
-              type: 'GET',
-              url: req.protocol + '://' + req.get('host') + req.originalUrl + '/' + doc._id
-            }
+            url: req.protocol + '://' + req.get('host') + req.originalUrl + '/' + doc._id
           }
         })
       }
@@ -83,6 +80,7 @@ exports.list_users = (req, res, next) => {
 exports.single_user = (req, res, next) => {
   const id = req.params.userId
   User.findById(id)
+    .lean()
     .exec()
     .then(doc => {
       if (doc.type === 'babysitter') {
@@ -130,7 +128,12 @@ exports.delete_user = (req, res, next) => {
 exports.find_users = (req, res, next) => {
   const distance = req.params.distance
   const nearbyZipcodes = zipcodes.radius(req.userData.zip, distance)
-  User.find({ 'zip': { $in: nearbyZipcodes } })
+  const id = req.userData.userId
+  User.find({
+    'zip': { $in: nearbyZipcodes },
+    _id: {$ne: id} })
+    .where('type', 'babysitter')
+    .lean()
     .exec()
     .then(docs => {
       const response = {
