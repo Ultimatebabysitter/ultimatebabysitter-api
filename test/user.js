@@ -230,5 +230,4 @@ describe('User Tests\n', () => {
         done()
       })
   })
-
 })
