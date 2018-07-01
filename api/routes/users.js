@@ -9,7 +9,7 @@ const userTypeCheck = require('../middleware/user-type-check')
 router.post('/', userTypeCheck, orderController.create_user)
 
 // get a user
-router.get('/:userId', orderController.single_user)
+router.get('/:userId', userAuthenticate, orderController.single_user)
 
 // update a user
 router.patch('/:userId', userAuthenticate, permissions, orderController.update_user)
