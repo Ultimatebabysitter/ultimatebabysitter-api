@@ -30,6 +30,9 @@ router.get('/:userId', (req, res, next) => {
     .exec()
     .then(docs => {
       var averageStorage = 0
+      let i
+      let ratingTrail
+      let userRatingAverage
       for (i = 0; i < docs.length; i++) {
         ratingTrail = docs[i].rating
         averageStorage = ratingTrail + averageStorage

@@ -86,7 +86,7 @@ exports.single_user = (req, res, next) => {
     .exec()
     .then(user => {
       // restrict data if not admin
-      if (req.userData.type != 'admin') {
+      if (req.userData.type !== 'admin') {
         // only return babysitter data
         if (user.type === 'babysitter') {
           const response = {
