@@ -6,7 +6,7 @@ const id = process.argv[2]
 mongoose.connect('mongodb://localhost/ultimatebabysitter')
 
 // update the user to admin
-User.findByIdAndUpdate(id, { $set: { type: 'admin' }}, function (err, result) {
+User.findByIdAndUpdate(id, { $set: { type: 'admin' } }, function (err, result) {
   if (err) {
     console.log(err)
   }
