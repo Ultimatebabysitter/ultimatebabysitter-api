@@ -26,6 +26,7 @@ exports.create_user = (req, res, next) => {
 // authenticate a user
 exports.authenticate_user = (req, res, next) => {
   User.find({email: req.body.email})
+    .lean()
     .exec()
     .then(user => {
       if (user.length < 1) {
@@ -38,7 +39,7 @@ exports.authenticate_user = (req, res, next) => {
           zip: user[0].zip,
           type: user[0].type,
           userId: user[0]._id
-        }, process.env.JWT_KEY, {expiresIn: '1h'})
+        }, process.env.JWT_KEY, {expiresIn: '3h'})
         return res.status(201).json({
           message: 'auth worked',
           token: token
@@ -55,6 +56,7 @@ exports.authenticate_user = (req, res, next) => {
 exports.list_users = (req, res, next) => {
   User.find()
     .select('email zip type _id')
+    .lean()
     .exec()
     .then(docs => {
       const response = {
@@ -82,11 +84,24 @@ exports.single_user = (req, res, next) => {
   User.findById(id)
     .lean()
     .exec()
-    .then(doc => {
-      if (doc.type === 'babysitter') {
-        res.status(200).json(doc)
+    .then(user => {
+      // restrict data if not admin
+      if (req.userData.type != 'admin') {
+        // only return babysitter data
+        if (user.type === 'babysitter') {
+          const response = {
+            first_name: user.first_name,
+            age: user.age,
+            city: user.city,
+            pay: user.pay,
+            details: user.details
+          }
+          res.status(200).json(response)
+        } else {
+          res.status(404).json({message: 'no babysitter found'})
+        }
       } else {
-        res.status(404).json({message: 'no babysitter found'})
+        res.status(200).json(user)
       }
     })
     .catch(err => {
