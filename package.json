@@ -15,6 +15,7 @@
   "author": "Joseph Leon",
   "license": "ISC",
   "dependencies": {
+    "aws-sdk": "^2.267.1",
     "body-parser": "^1.18.3",
     "dotenv": "^6.0.0",
     "express": "^4.16.3",
