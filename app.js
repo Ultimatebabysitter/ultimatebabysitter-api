@@ -11,6 +11,7 @@ require('dotenv').config()
 const userRoutes = require('./api/routes/users.js')
 const reportRoutes = require('./api/routes/reports.js')
 const ratingRoutes = require('./api/routes/ratings.js')
+const uploadRoutes = require('./api/routes/upload.js')
 
 // config
 const config = require('./_config')
