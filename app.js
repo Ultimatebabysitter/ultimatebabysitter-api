@@ -49,6 +49,7 @@ app.use((req, res, next) => {
 app.use('/users', userRoutes)
 app.use('/reports', reportRoutes)
 app.use('/ratings', ratingRoutes)
+app.use('/upload', uploadRoutes)
 
 // error catching
 app.use((req, res, next) => {
