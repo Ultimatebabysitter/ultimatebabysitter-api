@@ -10,11 +10,12 @@ UltimateBabysitter is an open-source application to help find babysitters.
 
 ## Requirements
 1. MongoDB running on your local machine. https://docs.mongodb.com/manual/installation/
+2. Uses AWS S3 to store files
 
 
 ### MIT License
 
-Copyright (c) 2018 https://github.com/Ultimatebabysitter/ultimatebabysitter-api
+Copyright (c) 2018 ultimatebabysitting.com - https://github.com/Ultimatebabysitter/ultimatebabysitter-api
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
