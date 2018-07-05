@@ -7,7 +7,7 @@
     "start": "app.js",
     "test": "mocha --exit",
     "test-nodemon": "nodemon --watch . --exec \"mocha --exit\"",
-    "start-nodemon": "nodemon app.js",
+    "nodemon": "nodemon app.js",
     "mongolocal": "mongo --host 127.0.0.1:27017",
     "standard": "standard",
     "standard-fix": "standard --fix"
