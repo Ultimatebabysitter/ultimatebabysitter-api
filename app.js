@@ -9,7 +9,6 @@ require('dotenv').config()
 
 // routes
 const userRoutes = require('./api/routes/users.js')
-const reportRoutes = require('./api/routes/reports.js')
 const ratingRoutes = require('./api/routes/ratings.js')
 const uploadRoutes = require('./api/routes/uploads.js')
 
@@ -47,7 +46,6 @@ app.use((req, res, next) => {
 
 // routes
 app.use('/users', userRoutes)
-app.use('/reports', reportRoutes)
 app.use('/ratings', ratingRoutes)
 app.use('/upload', uploadRoutes)
 
