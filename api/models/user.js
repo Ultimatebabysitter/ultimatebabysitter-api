@@ -15,6 +15,7 @@ const userSchema = mongoose.Schema({
   city: { type: String, required: true },
   state: { type: String, required: true },
   zip: { type: String, required: true },
+  image_url: String,
   type: { type: String, required: true, enum: ['parent', 'babysitter', 'admin'] },
   pay: Number,
   details: String,
