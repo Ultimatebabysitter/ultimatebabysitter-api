@@ -9,6 +9,7 @@ const userSchema = mongoose.Schema({
     index: { unique: true },
     match: /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/
   },
+  phone: { type: String },
   age: { type: Number, min: 18, required: true },
   address1: { type: String, required: true },
   address2: { type: String },
