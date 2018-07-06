@@ -22,7 +22,7 @@ const userSchema = mongoose.Schema({
   details: String,
   date: { type: Date, default: Date.now },
   verification: String,
-  reports: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Report' }],
+  ratings: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Rating' }],
   password: { type: String, required: true },
   status: { type: String, default: 'unverified' },
   temp: { type: String }
