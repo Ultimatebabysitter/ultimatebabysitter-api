@@ -1,6 +1,14 @@
-# Ultimate Babysitter
+# UltimateBabysitting API
 
-UltimateBabysitter is an open-source application to help find babysitters.
+UltimateBabysitting API is an open-source API to help find babysitters or advertise your babysitting services.
+
+## Features
+* User management/authentication
+* External file hosting
+* SMS/Phone authentication
+* Babysitter search by distance
+* Rating system
+* User activity monitoring
 
 ## Installation
 1. Clone the repository locally.
@@ -10,7 +18,8 @@ UltimateBabysitter is an open-source application to help find babysitters.
 
 ## Requirements
 1. MongoDB running on your local machine. https://docs.mongodb.com/manual/installation/
-2. Uses AWS S3 to store files
+2. AWS S3 to store files
+3. Twilio for user phone authentication
 
 
 ### MIT License
