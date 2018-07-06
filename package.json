@@ -25,6 +25,7 @@
     "nodemailer": "^4.6.5",
     "password-hash": "^1.2.2",
     "randomstring": "^1.1.5",
+    "twilio": "^3.17.5",
     "uuid": "^3.3.2",
     "zipcodes": "^6.0.0"
   },
