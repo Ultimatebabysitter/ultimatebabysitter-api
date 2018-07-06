@@ -60,6 +60,38 @@ exports.authenticate_user = (req, res, next) => {
     })
 }
 
+// verify a user
+exports.verify_user = (req, res, next) => {
+  userId = req.params.userId
+  authCode = req.params.authCode
+
+  User.findById(userId)
+    .select('_id temp')
+    .lean()
+    .exec()
+    .then(user => {
+      if (user.temp === authCode) {
+        // update user status
+        User.findByIdAndUpdate(userId, { $set: { status: 'verified' } }, function (err, result) {
+          if (err) {
+            console.log(err)
+          }
+          console.log('Result: ' + result)
+        })
+        res.status(200).json({
+          response: 'user validated'
+        })
+      } else {
+        res.status(400).json({
+          response: 'user not validated'
+        })
+      }
+    })
+    .catch(err => {
+      res.status(500).json({error: err})
+    })
+}
+
 // get a list of users
 exports.list_users = (req, res, next) => {
   User.find()

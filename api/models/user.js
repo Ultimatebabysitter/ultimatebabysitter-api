@@ -24,7 +24,7 @@ const userSchema = mongoose.Schema({
   verification: String,
   reports: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Report' }],
   password: { type: String, required: true },
-  status: { type: String },
+  status: { type: String, default: 'unverified' },
   temp: { type: String }
 })
 
