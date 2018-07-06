@@ -3,9 +3,16 @@ const mongoose = require('mongoose')
 const passwordHash = require('password-hash')
 const jwt = require('jsonwebtoken')
 const zipcodes = require('zipcodes')
+const twilioHelper = require('../helpers/twilio')
 
 // create a user
 exports.create_user = (req, res, next) => {
+  // if twilio is active send 4 digit code
+  if (process.env.TWILIO_ACTIVE === 'true') {
+    var randomNum = Math.floor(1000 + Math.random() * 9000)
+    twilioHelper.send_sms_code(req.body.phone, randomNum)
+    req.body.temp = randomNum
+  }
   const user = User({
     ...req.body,
     _id: new mongoose.Types.ObjectId(),
@@ -46,6 +53,38 @@ exports.authenticate_user = (req, res, next) => {
         })
       }
       res.status(401).json({message: 'auth failed'})
+    })
+    .catch(err => {
+      res.status(500).json({error: err})
+    })
+}
+
+// verify a user
+exports.verify_user = (req, res, next) => {
+  userId = req.params.userId
+  authCode = req.params.authCode
+
+  User.findById(userId)
+    .select('_id temp')
+    .lean()
+    .exec()
+    .then(user => {
+      if (user.temp === authCode) {
+        // update user status
+        User.findByIdAndUpdate(userId, { $set: { status: 'verified' } }, function (err, result) {
+          if (err) {
+            console.log(err)
+          }
+          console.log('Result: ' + result)
+        })
+        res.status(200).json({
+          response: 'user validated'
+        })
+      } else {
+        res.status(400).json({
+          response: 'user not validated'
+        })
+      }
     })
     .catch(err => {
       res.status(500).json({error: err})

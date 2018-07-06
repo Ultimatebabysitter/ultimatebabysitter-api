@@ -9,6 +9,7 @@ const userSchema = mongoose.Schema({
     index: { unique: true },
     match: /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/
   },
+  phone: { type: String },
   age: { type: Number, min: 18, required: true },
   address1: { type: String, required: true },
   address2: { type: String },
@@ -21,9 +22,9 @@ const userSchema = mongoose.Schema({
   details: String,
   date: { type: Date, default: Date.now },
   verification: String,
-  reports: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Report' }],
+  ratings: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Rating' }],
   password: { type: String, required: true },
-  status: { type: String },
+  status: { type: String, default: 'unverified' },
   temp: { type: String }
 })
 
