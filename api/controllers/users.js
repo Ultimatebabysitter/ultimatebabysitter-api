@@ -3,9 +3,7 @@ const mongoose = require('mongoose')
 const passwordHash = require('password-hash')
 const jwt = require('jsonwebtoken')
 const zipcodes = require('zipcodes')
-if (process.env.TWILIO_ACTIVE === 'true') {
-  const twilioHelper = require('../helpers/twilio')
-}
+const twilioHelper = require('../helpers/twilio')
 
 // create a user
 exports.create_user = (req, res, next) => {
