@@ -1,4 +1,5 @@
 process.env.NODE_ENV = 'test'
+process.env.TWILIO_ACTIVE = 'false'
 
 require('dotenv').config()
 
@@ -23,6 +24,7 @@ describe('User Tests\n', () => {
         'last_name': 'Russell',
         'email': 'brussell.fake@gmail.com',
         'age': 97,
+        'phone': '+18135551234',
         'address1': '12345 England Ct',
         'address2': '',
         'city': 'Tampa',
@@ -63,6 +65,7 @@ describe('User Tests\n', () => {
         'last_name': 'Einstein',
         'email': 'einstein.fake@gmail.com',
         'age': 76,
+        'phone': '+18135559876',
         'address1': '54321 Westway',
         'address2': '',
         'city': 'Tampa',
