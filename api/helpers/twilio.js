@@ -7,8 +7,8 @@ exports.send_sms_code = (phoneNum, randomNum) => {
     to: phoneNum,
     from: process.env.TWILIO_PHONE_NUMBER,
     body: `Weclome to UltimateBabysitter. Your auth code is: ${randomNum}`
-   })
-  .then((message) => console.log(message.sid));
+  })
+  .then((message) => console.log(message.sid))
 }
 
 // used for testing; process.env.MY_PHONE_NUMBER is your twilio verified number
@@ -17,6 +17,6 @@ exports.test_sms_code = (phoneNum, randomNum) => {
     to: process.env.MY_PHONE_NUMBER,
     from: process.env.TWILIO_PHONE_NUMBER,
     body: `Weclome to UltimateBabysitter. Your auth code is: ${randomNum}`
-   })
-  .then((message) => console.log(message.sid));
+  })
+  .then((message) => console.log(message.sid))
 }
