@@ -3,7 +3,9 @@ const mongoose = require('mongoose')
 const passwordHash = require('password-hash')
 const jwt = require('jsonwebtoken')
 const zipcodes = require('zipcodes')
-const twilioHelper = require('../helpers/twilio')
+if (process.env.TWILIO_ACTIVE === 'true') {
+  const twilioHelper = require('../helpers/twilio')
+}
 
 // create a user
 exports.create_user = (req, res, next) => {
@@ -11,7 +13,6 @@ exports.create_user = (req, res, next) => {
   if (process.env.TWILIO_ACTIVE === 'true') {
     var randomNum = Math.floor(1000 + Math.random() * 9000)
     twilioHelper.send_sms_code(req.body.phone, randomNum)
-    req.body.status = 'unverified'
     req.body.temp = randomNum
   }
   const user = User({
