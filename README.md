@@ -4,6 +4,8 @@ UltimateBabysitting API is an open-source API to help find babysitters or advert
 
 [![Known Vulnerabilities](https://snyk.io/test/github/Ultimatebabysitter/ultimatebabysitter-api/badge.svg?targetFile=package.json)](https://snyk.io/test/github/Ultimatebabysitter/ultimatebabysitter-api?targetFile=package.json)
 
+[![Build Status](https://travis-ci.org/Ultimatebabysitter/ultimatebabysitter-api.svg?branch=master)](https://travis-ci.org/Ultimatebabysitter/ultimatebabysitter-api)
+
 ## Features
 * User management/authentication
 * External file hosting
