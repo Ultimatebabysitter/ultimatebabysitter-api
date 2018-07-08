@@ -4,8 +4,28 @@ const morgan = require('morgan')
 const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
 const http = require('http')
+const helmet = require('helmet')
+const rateLimit = require('express-rate-limit')
 
 require('dotenv').config()
+
+app.use(helmet())
+
+// limit requests
+var limiter = new rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // limit each IP to 100 requests per windowMs
+  delayMs: 0 // disable delaying - full speed until the max limit is reached
+})
+//  apply to all requests
+app.use(limiter)
+
+var verifyLimiter = new rateLimit({
+  windowMs: 60 * 60 * 1000, // 60 minutes
+  max: 5, // limit each IP to 5 requests per windowMs
+  delayMs: 0 // disabled
+})
+app.use('/users/verify/', verifyLimiter)
 
 // routes
 const userRoutes = require('./api/routes/users.js')
