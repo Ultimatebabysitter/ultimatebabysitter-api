@@ -5,64 +5,12 @@ exports.get_ratings_by_user = (id) => {
   return Rating.find({ 'user': id }).lean().exec()
 }
 
-// module.exports = {
-//   get_ratings_by_user: (id) => {
-//     console.log("id: ", id);
-//     Rating.find({ 'user': id })
-//       .lean()
-//       .exec()
-//       .then(ratings => {
-//         const response = {
-//           count: ratings.length,
-//           ratings: ratings.map(rating => {
-//             return {
-//               id: rating._id,
-//               user: rating.user,
-//               rating: rating.rating
-//             }
-//           })
-//         }
-//         if (ratings) {
-//           // res.send(ratings)
-//           return response
-//         } else {
-//           // res.send("No ratings found.")
-//           return "No ratings found for the user."
-//         }
-//       })
-//       .catch(err => {
-//         return err
-//       })
-//   }
-// }
+// verify that current user hasn't already rated target user
+exports.is_user_rated = (targetUserId, currentUserId) => {
+  return Rating.find({ 'user': targetUserId }).where('reporting_user', currentUserId).lean().exec()
+}
 
-// User.findByIdAndUpdate(id, { $set: { type: 'admin' } }, function (err, result) {
-//   if (err) {
-//     console.log(err)
-//   }
-//   console.log('Result: ' + result)
-// })
-
-// Rating.find({ 'user': id })
-//   .lean()
-//   .exec()
-//   .then(ratings => {
-//     const response = {
-//       count: ratings.length,
-//       ratings: ratings.map(rating => {
-//         return {
-//           id: rating._id,
-//           user: rating.user,
-//           rating: rating.rating
-//         }
-//       })
-//     }
-//     if (ratings) {
-//       return response
-//     } else {
-//       return "No ratings found for the user."
-//     }
-//   })
-//   .catch(err => {
-//     return err
-//   })
+// delete rating
+exports.delete_rating = (id) => {
+  return Rating.remove({ _id: id }).exec()
+}

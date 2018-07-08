@@ -93,7 +93,6 @@ exports.verify_user = (req, res, next) => {
 
 // get a list of users
 exports.list_users = (req, res, next) => {
-  console.log(req);
   User.find()
     .select('email zip type _id')
     .lean()
