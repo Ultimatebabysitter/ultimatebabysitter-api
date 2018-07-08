@@ -4,7 +4,7 @@ const passwordHash = require('password-hash')
 const jwt = require('jsonwebtoken')
 const zipcodes = require('zipcodes')
 const twilioHelper = require('../helpers/twilio')
-const usersDatabase = require('../database/users');
+const usersDatabase = require('../database/users')
 
 // create a user
 exports.create_user = (req, res, next) => {
