@@ -2,13 +2,15 @@ const express = require('express')
 const router = express.Router()
 const ratingsController = require('../controllers/ratings')
 const userAuthenticate = require('../middleware/user-authentication')
-// const permissions = require('../middleware/permissions')
-// const userTypeCheck = require('../middleware/user-type-check')
+const permissions = require('../middleware/permissions')
 
 // create a rating
 router.post('/', userAuthenticate, ratingsController.create_rating)
 
 // get a users average rating
 router.get('/:userId', ratingsController.get_average_rating)
+
+// delete a rating
+router.delete('/:userId', userAuthenticate, permissions, ratingsController.delete_rating)
 
 module.exports = router
