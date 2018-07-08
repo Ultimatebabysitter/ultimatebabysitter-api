@@ -16,7 +16,7 @@ exports.get_user = (id) => {
 
 // get all users
 exports.get_all_users = () => {
-  return User.find().lean().exec()
+  return User.find().sort({last_login: 'desc'}).lean().exec()
 }
 
 // update a user
@@ -31,5 +31,9 @@ exports.delete_user = (id) => {
 
 // get users by range
 exports.users_by_distance = (id, nearbyZipcodes) => {
-  return User.find({'zip': { $in: nearbyZipcodes }, _id: {$ne: id} }).where('type', 'babysitter').lean().exec()
+  return User.find({'zip': { $in: nearbyZipcodes }, _id: {$ne: id} })
+              .where('type', 'babysitter')
+              .sort({last_login: 'desc'})
+              .lean()
+              .exec()
 }
