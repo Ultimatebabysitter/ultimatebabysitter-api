@@ -4,6 +4,7 @@ const passwordHash = require('password-hash')
 const jwt = require('jsonwebtoken')
 const zipcodes = require('zipcodes')
 const twilioHelper = require('../helpers/twilio')
+const usersDatabase = require('../database/users');
 
 // create a user
 exports.create_user = (req, res, next) => {
@@ -18,8 +19,7 @@ exports.create_user = (req, res, next) => {
     _id: new mongoose.Types.ObjectId(),
     password: passwordHash.generate(req.body.password)
   })
-  user
-    .save()
+  usersDatabase.create_user(user)
     .then(result => {
       res.status(201).json({
         user: result
@@ -32,9 +32,8 @@ exports.create_user = (req, res, next) => {
 
 // authenticate a user
 exports.authenticate_user = (req, res, next) => {
-  User.find({email: req.body.email})
-    .lean()
-    .exec()
+  currentDate = new Date()
+  usersDatabase.find_user_by_email(req.body.email)
     .then(user => {
       if (user.length < 1) {
         return res.status(401).json({message: 'auth failed'})
@@ -47,6 +46,7 @@ exports.authenticate_user = (req, res, next) => {
           type: user[0].type,
           userId: user[0]._id
         }, process.env.JWT_KEY, {expiresIn: '3h'})
+        User.findByIdAndUpdate(user[0]._id, { $set: { last_login: currentDate } }, function (err, result) {})
         return res.status(201).json({
           message: 'auth worked',
           token: token
@@ -63,11 +63,7 @@ exports.authenticate_user = (req, res, next) => {
 exports.verify_user = (req, res, next) => {
   userId = req.params.userId
   authCode = req.params.authCode
-
-  User.findById(userId)
-    .select('_id temp')
-    .lean()
-    .exec()
+  usersDatabase.get_user(userId)
     .then(user => {
       if (user.temp === authCode) {
         // update user status
@@ -93,10 +89,7 @@ exports.verify_user = (req, res, next) => {
 
 // get a list of users
 exports.list_users = (req, res, next) => {
-  User.find()
-    .select('email zip type _id')
-    .lean()
-    .exec()
+  usersDatabase.get_all_users()
     .then(docs => {
       const response = {
         count: docs.length,
@@ -120,9 +113,7 @@ exports.list_users = (req, res, next) => {
 // get a user
 exports.single_user = (req, res, next) => {
   const id = req.params.userId
-  User.findById(id)
-    .lean()
-    .exec()
+  usersDatabase.get_user(id)
     .then(user => {
       // restrict data if not admin
       if (req.userData.type != 'admin') {
@@ -155,7 +146,7 @@ exports.update_user = (req, res, next) => {
   for (const ops of req.body) {
     updateOps[ops.propName] = ops.value
   }
-  User.update({ _id: id }, { $set: updateOps })
+  usersDatabase.update_user(id, updateOps)
     .exec()
     .then(result => {
       res.status(200).json(result)
@@ -168,7 +159,7 @@ exports.update_user = (req, res, next) => {
 // delete a user
 exports.delete_user = (req, res, next) => {
   const id = req.params.userId
-  User.remove({ _id: id })
+  usersDatabase.delete_user(id)
     .exec()
     .then(result => {
       res.status(200).json(result)
@@ -183,12 +174,7 @@ exports.find_users = (req, res, next) => {
   const distance = req.params.distance
   const nearbyZipcodes = zipcodes.radius(req.userData.zip, distance)
   const id = req.userData.userId
-  User.find({
-    'zip': { $in: nearbyZipcodes },
-    _id: {$ne: id} })
-    .where('type', 'babysitter')
-    .lean()
-    .exec()
+  usersDatabase.users_by_distance(id, nearbyZipcodes)
     .then(docs => {
       const response = {
         numberOfUsers: docs.length,

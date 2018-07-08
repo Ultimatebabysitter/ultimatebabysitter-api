@@ -21,6 +21,7 @@ const userSchema = mongoose.Schema({
   pay: Number,
   details: String,
   date: { type: Date, default: Date.now },
+  last_login: { type: Date, default: Date.now },
   verification: String,
   ratings: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Rating' }],
   password: { type: String, required: true },
