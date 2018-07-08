@@ -1,3 +1,5 @@
+[![Known Vulnerabilities](https://snyk.io/test/github/Ultimatebabysitter/ultimatebabysitter-api/badge.svg?targetFile=package.json)](https://snyk.io/test/github/Ultimatebabysitter/ultimatebabysitter-api?targetFile=package.json)
+
 # UltimateBabysitting API
 
 UltimateBabysitting API is an open-source API to help find babysitters or advertise your babysitting services.
