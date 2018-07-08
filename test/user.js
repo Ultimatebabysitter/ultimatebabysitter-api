@@ -8,9 +8,11 @@ const chaiHttp = require('chai-http')
 const server = require('../app')
 const should = chai.should()
 const User = require('../api/models/user')
+const Rating = require('../api/models/rating')
 let token
 let userId
 let otherUserId
+let ratingId
 
 chai.use(chaiHttp)
 
@@ -105,6 +107,47 @@ describe('User Tests\n', () => {
         res.should.have.status(201)
         res.should.be.json
         res.body.message.should.equal('auth worked')
+        done()
+      })
+  })
+
+  it('should rate a babysitter POST', function (done) {
+    chai.request(server)
+      .post('/ratings')
+      .set('Authorization', 'Bearer ' + token)
+      .send({
+      	"rating": "4",
+      	"user": otherUserId,
+      	"reporting_user": userId
+      })
+      .end(function (err, res) {
+        ratingId = res.body._id
+        res.should.have.status(201)
+        res.should.be.json
+        done()
+      })
+  })
+
+  it('should find a babysitters rating', function(done) {
+    chai.request(server)
+      .get('/ratings/' + otherUserId)
+      .end(function (err, res) {
+        res.should.have.status(200)
+        res.should.be.json
+        res.body.count.should.equal(1)
+        res.body.average.should.equal(4)
+        res.body.ratings[0].rating.should.equal(4)
+        done()
+      })
+  })
+
+  it('should delete a rating at /ratings/:ratingId DELETE', function (done) {
+    chai.request(server)
+      .delete('/ratings/' + ratingId)
+      .set('Authorization', 'Bearer ' + token)
+      .end(function (err, res) {
+        res.should.have.status(200)
+        res.should.be.json
         done()
       })
   })

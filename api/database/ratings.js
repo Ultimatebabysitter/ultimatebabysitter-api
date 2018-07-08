@@ -11,6 +11,6 @@ exports.is_user_rated = (targetUserId, currentUserId) => {
 }
 
 // delete rating
-exports.delete_rating = (id) => {
-  return Rating.remove({ _id: id }).exec()
+exports.delete_rating = (id, currentUserId) => {
+  return Rating.remove({ _id: id }).where('reporting_user', currentUserId).exec()
 }

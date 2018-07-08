@@ -16,14 +16,14 @@ exports.create_rating = (req, res, next) => {
       if (!Array.isArray(ratings) || !ratings.length) {
         return rating.save()
       } else {
-        res.status(200).json({ message: "cannot rate the same user more than once"})
+        res.status(200).json({message: "cannot rate the same user more than once"})
       }
     })
     .then(result => {
-      res.status(201).json({ rating: result })
+      res.status(201).json(result)
     })
     .catch(err => {
-      res.status(500).json({ error: err })
+      res.status(500).json({error: err})
     })
 }
 
@@ -59,8 +59,9 @@ exports.get_average_rating = (req, res, next) => {
 
 // delete a rating
 exports.delete_rating = (req, res, next) => {
-  const id = req.params.userId
-  ratingsDatabase.delete_rating(id)
+  const id = req.params.ratingId
+  const currentUserId = req.userData.userId
+  ratingsDatabase.delete_rating(id, currentUserId)
     .then(result => {
       res.status(200).json(result)
     })
