@@ -4,9 +4,10 @@ const usersController = require('../controllers/users')
 const userAuthenticate = require('../middleware/user-authentication')
 const permissions = require('../middleware/permissions')
 const userTypeCheck = require('../middleware/user-type-check')
+const sanitizeUser = require('../middleware/sanitize-user')
 
 // create a user
-router.post('/', userTypeCheck, usersController.create_user)
+router.post('/', sanitizeUser, userTypeCheck, usersController.create_user)
 
 // get a user
 router.get('/:userId', userAuthenticate, usersController.single_user)
