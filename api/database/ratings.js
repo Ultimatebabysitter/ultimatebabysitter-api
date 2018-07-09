@@ -7,10 +7,10 @@ exports.get_ratings_by_user = (id) => {
 
 // verify that current user hasn't already rated target user
 exports.is_user_rated = (targetUserId, currentUserId) => {
-  return Rating.find({ 'user': targetUserId }).where('reporting_user', currentUserId).lean().exec()
+  return Rating.find({ 'user': targetUserId, 'reporting_user': currentUserId }).lean().exec()
 }
 
 // delete rating
 exports.delete_rating = (id, currentUserId) => {
-  return Rating.remove({ _id: id }).where('reporting_user', currentUserId).exec()
+  return Rating.remove({ _id: id, 'reporting_user': currentUserId }).exec()
 }
