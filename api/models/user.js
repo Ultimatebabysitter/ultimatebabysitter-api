@@ -24,7 +24,7 @@ const userSchema = mongoose.Schema({
   last_login: { type: Date, default: Date.now },
   verification: String,
   ratings: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Rating' }],
-  password: { type: String, required: true },
+  password: { type: String, required: true, min: 12 },
   status: { type: String, default: 'unverified' },
   temp: { type: String }
 })

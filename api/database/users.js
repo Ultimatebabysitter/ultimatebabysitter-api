@@ -31,8 +31,7 @@ exports.delete_user = (id) => {
 
 // get users by range
 exports.users_by_distance = (id, nearbyZipcodes) => {
-  return User.find({'zip': { $in: nearbyZipcodes }, _id: {$ne: id} })
-              .where('type', 'babysitter')
+  return User.find({'zip': { $in: nearbyZipcodes }, _id: {$ne: id}, type: 'babysitter' })
               .sort({last_login: 'desc'})
               .lean()
               .exec()

@@ -2,9 +2,10 @@
 
 UltimateBabysitting API is an open-source API to help find babysitters or advertise your babysitting services.
 
+<!-- Badges -->
 [![Known Vulnerabilities](https://snyk.io/test/github/Ultimatebabysitter/ultimatebabysitter-api/badge.svg?targetFile=package.json)](https://snyk.io/test/github/Ultimatebabysitter/ultimatebabysitter-api?targetFile=package.json)
-
 [![Build Status](https://travis-ci.org/Ultimatebabysitter/ultimatebabysitter-api.svg?branch=master)](https://travis-ci.org/Ultimatebabysitter/ultimatebabysitter-api)
+<span class="badge-paypal"><a href="https://paypal.me/ultimatebabysitting" title="Donate to this project using Paypal"><img src="https://img.shields.io/badge/paypal-donate-yellow.svg" alt="PayPal donate button" /></a></span>
 
 ## Features
 * User management/authentication

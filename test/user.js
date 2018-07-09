@@ -74,8 +74,8 @@ describe('User Tests\n', () => {
         'state': 'FL',
         'zip': '33609',
         'type': 'babysitter',
-        'pay': 0,
-        'details': 'Developed a general theory of babysitting.',
+        'pay': 10,
+        'details': '<script>bla</script>Developed a general theory of babysitting.',
         'verification': 'NULL',
         'password': 'JU&^%Slkjl8ijoij8jij3oa'
       })
@@ -91,7 +91,7 @@ describe('User Tests\n', () => {
         res.body.user.state.should.equal('FL')
         res.body.user.zip.should.equal('33609')
         res.body.user.type.should.equal('babysitter')
-        res.body.user.pay.should.equal(0)
+        res.body.user.pay.should.equal(10)
         res.body.user.details.should.equal('Developed a general theory of babysitting.')
         res.body.user.verification.should.equal('NULL')
         done()
@@ -168,7 +168,7 @@ describe('User Tests\n', () => {
         res.body.first_name.should.equal('Albert')
         res.body.age.should.equal(76)
         res.body.city.should.equal('Tampa')
-        res.body.pay.should.equal(0)
+        res.body.pay.should.equal(10)
         res.body.details.should.equal('Developed a general theory of babysitting.')
         done()
       })

@@ -1,5 +1,5 @@
 const Rating = require('../models/rating.js')
-const ratingsDatabase = require('../database/ratings');
+const ratingsDatabase = require('../database/ratings')
 const mongoose = require('mongoose')
 
 // create a rating
@@ -16,7 +16,7 @@ exports.create_rating = (req, res, next) => {
       if (!Array.isArray(ratings) || !ratings.length) {
         return rating.save()
       } else {
-        res.status(200).json({message: "cannot rate the same user more than once"})
+        res.status(200).json({message: 'cannot rate the same user more than once'})
       }
     })
     .then(result => {
@@ -49,7 +49,7 @@ exports.get_average_rating = (req, res, next) => {
       if (ratings) {
         res.status(200).json(response)
       } else {
-        res.status(200).json({message: "No ratings found"})
+        res.status(200).json({message: 'No ratings found'})
       }
     })
     .catch(err => {
