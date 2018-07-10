@@ -21,9 +21,15 @@ exports.create_user = (req, res, next) => {
   })
   usersDatabase.create_user(user)
     .then(result => {
-      res.status(201).json({
-        user: result
-      })
+      const response = {
+        id: result._id,
+        first_name: result.first_name,
+        age: result.age,
+        city: result.city,
+        pay: result.pay,
+        details: result.details
+      }
+      res.status(201).json(response)
     })
     .catch(err => {
       res.status(500).json({error: err})
