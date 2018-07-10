@@ -7,9 +7,11 @@ const http = require('http')
 const helmet = require('helmet')
 const rateLimit = require('express-rate-limit')
 const expressSanitizer = require('express-sanitizer')
+const compression = require('compression')
 
 require('dotenv').config()
 
+app.use(compression())
 app.use(helmet())
 
 // limit requests
