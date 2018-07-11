@@ -1,7 +1,5 @@
 const User = require('../api/models/user.js')
 const mongoose = require('mongoose')
-const faker = require('faker')
-// const count = process.argv[2]
 
 // connect to mongodb
 mongoose.connect('mongodb://localhost/ultimatebabysitter')

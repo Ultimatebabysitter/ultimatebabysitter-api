@@ -17,9 +17,9 @@ exports.get_signed_url = (req, res, next) => {
       ContentType: 'jpeg',
       Key: key
     },
-    (err, url) => res.send({
+    (url) => res.send({
       key: key,
       url: url
-    })
+    }).catch(err => { res.send({error: err}) })
   )
 }
