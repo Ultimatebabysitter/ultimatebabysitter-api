@@ -5,7 +5,7 @@ const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
 const http = require('http')
 const helmet = require('helmet')
-const rateLimit = require('express-rate-limit')
+const RateLimit = require('express-rate-limit')
 const expressSanitizer = require('express-sanitizer')
 const compression = require('compression')
 
@@ -15,7 +15,7 @@ app.use(compression())
 app.use(helmet())
 
 // limit requests
-var limiter = new rateLimit({
+var limiter = new RateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 100, // limit each IP to 100 requests per windowMs
   delayMs: 0 // disable delaying - full speed until the max limit is reached
@@ -23,12 +23,19 @@ var limiter = new rateLimit({
 //  apply to all requests
 app.use(limiter)
 
-var verifyLimiter = new rateLimit({
+var verifyLimiter = new RateLimit({
   windowMs: 60 * 60 * 1000, // 60 minutes
   max: 5, // limit each IP to 5 requests per windowMs
   delayMs: 0 // disabled
 })
 app.use('/users/verify/', verifyLimiter)
+
+var authLimiter = new RateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 20, // limit each IP to 100 requests per windowMs
+  delayMs: 0 // disable delaying - full speed until the max limit is reached
+})
+app.use('/users/authenticate/', authLimiter)
 
 // routes
 const userRoutes = require('./api/routes/users.js')

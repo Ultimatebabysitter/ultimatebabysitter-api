@@ -38,7 +38,7 @@ exports.create_user = (req, res, next) => {
 
 // authenticate a user
 exports.authenticate_user = (req, res, next) => {
-  currentDate = new Date()
+  var currentDate = new Date()
   usersDatabase.find_user_by_email(req.body.email)
     .then(user => {
       if (user.length < 1) {
@@ -52,7 +52,11 @@ exports.authenticate_user = (req, res, next) => {
           type: user[0].type,
           userId: user[0]._id
         }, process.env.JWT_KEY, {expiresIn: '3h'})
-        User.findByIdAndUpdate(user[0]._id, { $set: { last_login: currentDate } }, function (err, result) {})
+        User.findByIdAndUpdate(user[0]._id, { $set: { last_login: currentDate } }, function (err, result) {
+          if (err) {
+            res.send(err)
+          }
+        })
         return res.status(201).json({
           message: 'auth worked',
           token: token
@@ -67,8 +71,8 @@ exports.authenticate_user = (req, res, next) => {
 
 // verify a user
 exports.verify_user = (req, res, next) => {
-  userId = req.params.userId
-  authCode = req.params.authCode
+  var userId = req.params.userId
+  var authCode = req.params.authCode
   usersDatabase.get_user(userId)
     .then(user => {
       if (user.temp === authCode) {
@@ -122,7 +126,7 @@ exports.single_user = (req, res, next) => {
   usersDatabase.get_user(id)
     .then(user => {
       // restrict data if not admin
-      if (req.userData.type != 'admin') {
+      if (req.userData.type !== 'admin') {
         // only return babysitter data
         if (user.type === 'babysitter') {
           const response = {

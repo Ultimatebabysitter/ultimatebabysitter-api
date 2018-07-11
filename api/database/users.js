@@ -4,6 +4,7 @@ const User = require('../models/user.js')
 exports.create_user = (userData) => {
   return userData.save()
 }
+
 // authenticate a user
 exports.find_user_by_email = (email) => {
   return User.find({email: email}).lean().exec()
@@ -31,7 +32,7 @@ exports.delete_user = (id) => {
 
 // get users by range
 exports.users_by_distance = (id, nearbyZipcodes) => {
-  return User.find({'zip': { $in: nearbyZipcodes }, _id: {$ne: id}, type: 'babysitter' })
+  return User.find({ 'zip': { $in: nearbyZipcodes }, _id: { $ne: id }, type: 'babysitter' })
     .sort({last_login: 'asc'})
     .lean()
     .exec()
