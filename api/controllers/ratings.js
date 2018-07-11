@@ -35,7 +35,7 @@ exports.get_average_rating = (req, res, next) => {
       var averageStorage = 0
       let ratingsCount = ratings.length
       for (let i = 0; i < ratingsCount; i++) {
-        var averageStorage = ratings[i].rating + averageStorage
+        averageStorage = ratings[i].rating + averageStorage
       }
       const response = {
         count: ratingsCount,
