@@ -1,7 +1,7 @@
 module.exports = (req, res, next) => {
   try {
     // sanitize all the fields
-    const { body } = req;
+    const { body } = req
     for (const [key, value] of Object.entries(body)) {
       if (key != 'password' && value) {
         body[key] = req.sanitize(value)

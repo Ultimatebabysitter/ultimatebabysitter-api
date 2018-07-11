@@ -8,6 +8,6 @@ exports.send_sms_code = (phoneNum, randomNum) => {
     from: process.env.TWILIO_PHONE_NUMBER,
     body: `Weclome to UltimateBabysitter. Your auth code is: ${randomNum}`
   })
-  .then((message) => console.log(message.sid))
-  .catch((err) => console.log(err))
+    .then((message) => console.log(message.sid))
+    .catch((err) => console.log(err))
 }

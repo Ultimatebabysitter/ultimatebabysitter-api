@@ -7,7 +7,7 @@ const faker = require('faker')
 mongoose.connect('mongodb://localhost/ultimatebabysitter')
 
 // update the user to admin
-User.deleteMany( {type: { $nin: 'admin' }}, function (err, result) {
+User.deleteMany({type: { $nin: 'admin' }}, function (err, result) {
   if (err) {
     console.log(err)
   }
