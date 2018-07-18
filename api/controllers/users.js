@@ -203,3 +203,23 @@ exports.find_users = (req, res, next) => {
       res.status(500).json({error: err})
     })
 }
+
+// send mail
+exports.send_mail = (req, res, next) => {
+  const sgMail = require('@sendgrid/mail')
+  sgMail.setApiKey(process.env.SENDGRID_API_KEY)
+  const msg = {
+    to: req.body.email,
+    from: req.userData.email,
+    subject: req.body.subject,
+    html: req.body.html,
+  };
+  sgMail
+  .send(msg)
+  .then(response => {
+    res.status(201).json(response)
+  })
+  .catch(error => {
+    res.status(500).json(error)
+  });
+}

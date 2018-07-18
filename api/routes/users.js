@@ -31,4 +31,7 @@ router.get('/', usersController.list_users)
 // get users by distance in relation to authenticated user
 router.get('/distance/:distance', sanitizeParams, userAuthenticate, usersController.find_users)
 
+// message a user
+router.post('/message/user', userAuthenticate, usersController.send_mail)
+
 module.exports = router
