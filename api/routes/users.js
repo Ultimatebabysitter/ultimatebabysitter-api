@@ -7,9 +7,6 @@ const userTypeCheck = require('../middleware/user-type-check')
 const sanitizeUser = require('../middleware/sanitize-user')
 const sanitizeParams = require('../middleware/sanitize-params')
 
-// message a user
-router.post('/message/user', usersController.message_user)
-
 // create a user
 router.post('/', sanitizeUser, userTypeCheck, usersController.create_user)
 
@@ -33,5 +30,8 @@ router.get('/', usersController.list_users)
 
 // get users by distance in relation to authenticated user
 router.get('/distance/:distance', sanitizeParams, userAuthenticate, usersController.find_users)
+
+// message a user
+router.post('/message/user', userAuthenticate, usersController.send_mail)
 
 module.exports = router

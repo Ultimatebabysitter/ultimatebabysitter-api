@@ -6,28 +6,6 @@ const zipcodes = require('zipcodes')
 const twilioHelper = require('../helpers/twilio')
 const usersDatabase = require('../database/users')
 
-// email a user
-exports.message_user = (req, res, next) => {
-  const sgMail = require('@sendgrid/mail')
-  sgMail.setApiKey(process.env.SENDGRID_API_KEY)
-  console.log(sgMail)
-  const msg = {
-    to: process.env.TEST_EMAIL,
-    from: process.env.TEST_EMAIL,
-    subject: 'Sending with SendGrid is Fun',
-    text: 'and easy to do anywhere, even with Node.js',
-    html: '<strong>and easy to do anywhere, even with Node.js</strong>',
-  };
-  sgMail
-  .send(msg)
-  .then(() => {
-    res.send(msg)
-  })
-  .catch(error => {
-    res.send(error)
-  });
-}
-
 // create a user
 exports.create_user = (req, res, next) => {
   // if twilio is active send 4 digit code
@@ -224,4 +202,24 @@ exports.find_users = (req, res, next) => {
     .catch(err => {
       res.status(500).json({error: err})
     })
+}
+
+// send mail
+exports.send_mail = (req, res, next) => {
+  const sgMail = require('@sendgrid/mail')
+  sgMail.setApiKey(process.env.SENDGRID_API_KEY)
+  const msg = {
+    to: req.body.email,
+    from: req.userData.email,
+    subject: req.body.subject,
+    html: req.body.html,
+  };
+  sgMail
+  .send(msg)
+  .then(response => {
+    res.status(201).json(response)
+  })
+  .catch(error => {
+    res.status(500).json(error)
+  });
 }
