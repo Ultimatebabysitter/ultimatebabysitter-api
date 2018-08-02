@@ -1,6 +1,7 @@
 const Rating = require('../models/rating.js')
 const ratingsDatabase = require('../database/ratings')
 const mongoose = require('mongoose')
+const _ = require('lodash')
 
 // create a rating
 exports.create_rating = (req, res, next) => {
@@ -32,14 +33,13 @@ exports.get_average_rating = (req, res, next) => {
   const targetId = req.params.userId
   ratingsDatabase.get_ratings_by_user(targetId)
     .then(ratings => {
-      var averageStorage = 0
       let ratingsCount = ratings.length
-      for (let i = 0; i < ratingsCount; i++) {
-        averageStorage = ratings[i].rating + averageStorage
-      }
+      var ratingsArray = _.times(ratingsCount, function(i) {
+        return ratings[i].rating
+      })
       const response = {
         count: ratingsCount,
-        average: averageStorage / ratingsCount,
+        average: _.meanBy(ratingsArray),
         ratings: ratings.map(rating => {
           return {
             ...rating
