@@ -5,6 +5,7 @@ const jwt = require('jsonwebtoken')
 const zipcodes = require('zipcodes')
 const twilioHelper = require('../helpers/twilio')
 const usersDatabase = require('../database/users')
+const _ = require('lodash')
 
 // create a user
 exports.create_user = (req, res, next) => {
@@ -152,11 +153,11 @@ exports.single_user = (req, res, next) => {
 // update a user
 exports.update_user = (req, res, next) => {
   const id = req.params.userId
-  const updateOps = {}
-  for (const ops of req.body) {
-    updateOps[ops.propName] = ops.value
-  }
-  usersDatabase.update_user(id, updateOps)
+  const updateData = {}
+  _.times(req.body.length, function(i) {
+    updateData[req.body[i]['propName']] = req.body[i]['value']
+  })
+  usersDatabase.update_user(id, updateData)
     .exec()
     .then(result => {
       res.status(200).json(result)
