@@ -1,3 +1,4 @@
+"use strict"
 const Rating = require('../models/rating.js')
 const ratingsDatabase = require('../database/ratings')
 const mongoose = require('mongoose')
@@ -58,14 +59,14 @@ exports.get_average_rating = (req, res, next) => {
 }
 
 // delete a rating
-exports.delete_rating = (req, res, next) => {
+exports.deleteRating = async (req, res, next) => {
   const id = req.params.ratingId
   const currentUserId = req.userData.userId
-  ratingsDatabase.delete_rating(id, currentUserId)
-    .then(result => {
-      res.status(200).json(result)
-    })
-    .catch(err => {
-      res.status(500).json({error: err})
-    })
+  try {
+    const result = await ratingsDatabase.deleteRating(id, currentUserId)
+    res.status(200).json(result)
+  }
+  catch (err) {
+    res.status(500).json({error: err})
+  }
 }

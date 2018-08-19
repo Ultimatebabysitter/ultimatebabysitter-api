@@ -12,6 +12,6 @@ router.post('/', sanitizeRating, userAuthenticate, ratingsController.create_rati
 router.get('/:userId', sanitizeParams, ratingsController.get_average_rating)
 
 // delete a rating
-router.delete('/:ratingId', sanitizeParams, userAuthenticate, ratingsController.delete_rating)
+router.delete('/:ratingId', sanitizeParams, userAuthenticate, ratingsController.deleteRating)
 
 module.exports = router
