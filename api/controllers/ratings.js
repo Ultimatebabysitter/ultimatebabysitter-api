@@ -12,8 +12,9 @@ exports.create_rating = (req, res, next) => {
     _id: new mongoose.Types.ObjectId()
   })
 
-  ratingsDatabase.is_user_rated(req.body.user, id)
+  ratingsDatabase.isUserRated(req.body.user, id)
     .then(ratings => {
+      console.log(ratings);
       // check if logged user has rated target babysitter
       if (!Array.isArray(ratings) || !ratings.length) {
         return rating.save()
@@ -29,33 +30,56 @@ exports.create_rating = (req, res, next) => {
     })
 }
 
+exports.createRating = async (req, res, next) => {
+  const id = req.userData.userId
+  const rating = Rating({
+    ...req.body,
+    _id: new mongoose.Types.ObjectId()
+  })
+  try {
+    const rated = await ratingsDatabase.isUserRated(req.body.user, id)
+    console.log(rated);
+    // check if logged user has rated target babysitter
+    // if (!Array.isArray(rated) || !ratings.length) {
+    //   console.log('save');
+    //   return rating.save()
+    // } else {
+    //   console.log('cant save');
+    //   res.status(200).json({message: 'cannot rate the same user more than once'})
+    // }
+    console.log('no if else');
+    res.status(201).json(rated)
+  } catch (err) {
+    res.status(500).json({error: err})
+  }
+}
+
 // get average rating of a user
-exports.get_average_rating = (req, res, next) => {
+exports.averageRating = async (req, res, next) => {
   const targetId = req.params.userId
-  ratingsDatabase.get_ratings_by_user(targetId)
-    .then(ratings => {
-      let ratingsCount = ratings.length
-      var ratingsArray = _.times(ratingsCount, function(i) {
-        return ratings[i].rating
+  try {
+    const ratings = await ratingsDatabase.userRatings(targetId)
+    let ratingsCount = ratings.length
+    var ratingsArray = _.times(ratingsCount, function(i) {
+      return ratings[i].rating
+    })
+    const response = {
+      count: ratingsCount,
+      average: _.meanBy(ratingsArray),
+      ratings: ratings.map(rating => {
+        return {
+          ...rating
+        }
       })
-      const response = {
-        count: ratingsCount,
-        average: _.meanBy(ratingsArray),
-        ratings: ratings.map(rating => {
-          return {
-            ...rating
-          }
-        })
-      }
-      if (ratings) {
-        res.status(200).json(response)
-      } else {
-        res.status(200).json({message: 'No ratings found'})
-      }
-    })
-    .catch(err => {
-      res.status(500).json({error: err})
-    })
+    }
+    if (ratings) {
+      res.status(200).json(response)
+    } else {
+      res.status(200).json({message: 'No ratings found'})
+    }
+  } catch (err) {
+    res.status(500).json({error: err})
+  }
 }
 
 // delete a rating

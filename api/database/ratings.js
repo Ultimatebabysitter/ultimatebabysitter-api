@@ -1,12 +1,12 @@
 const Rating = require('../models/rating.js')
 
 // get ratings by user id
-exports.get_ratings_by_user = (id) => {
+exports.userRatings = (id) => {
   return Rating.find({ 'user': id }).lean().exec()
 }
 
 // verify that current user hasn't already rated target user
-exports.is_user_rated = (targetUserId, currentUserId) => {
+exports.isUserRated = (targetUserId, currentUserId) => {
   return Rating.find({ 'user': targetUserId, 'reporting_user': currentUserId }).lean().exec()
 }
 

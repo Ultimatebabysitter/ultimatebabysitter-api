@@ -9,7 +9,7 @@ const sanitizeParams = require('../middleware/sanitize-params')
 router.post('/', sanitizeRating, userAuthenticate, ratingsController.create_rating)
 
 // get a users average rating
-router.get('/:userId', sanitizeParams, ratingsController.get_average_rating)
+router.get('/:userId', sanitizeParams, ratingsController.averageRating)
 
 // delete a rating
 router.delete('/:ratingId', sanitizeParams, userAuthenticate, ratingsController.deleteRating)
