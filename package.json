@@ -10,7 +10,9 @@
     "nodemon": "nodemon app.js",
     "mongolocal": "mongo --host 127.0.0.1:27017",
     "standard": "standard",
-    "standard-fix": "standard --fix"
+    "standard-fix": "standard --fix",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
   },
   "author": "Joseph Leon",
   "license": "ISC",
@@ -33,7 +35,8 @@
     "randomstring": "^1.1.5",
     "twilio": "^3.17.5",
     "uuid": "^3.3.2",
-    "zipcodes": "^6.0.0"
+    "zipcodes": "^6.0.0",
+    "snyk": "^1.316.1"
   },
   "devDependencies": {
     "chai": "^4.1.2",
@@ -46,5 +49,6 @@
     "ignore": [
       "/test/*.js"
     ]
-  }
+  },
+  "snyk": true
 }
