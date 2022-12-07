@@ -20,7 +20,7 @@
     "body-parser": "^1.18.3",
     "compression": "^1.7.2",
     "dotenv": "^6.0.0",
-    "express": "^4.16.3",
+    "express": "^4.17.3",
     "express-rate-limit": "^2.11.0",
     "express-sanitizer": "^1.0.4",
     "faker": "^4.1.0",
