@@ -15,7 +15,7 @@
   "author": "Joseph Leon",
   "license": "ISC",
   "dependencies": {
-    "@sendgrid/mail": "^6.3.1",
+    "@sendgrid/mail": "^7.0.0",
     "aws-sdk": "^2.272.1",
     "body-parser": "^1.18.3",
     "compression": "^1.7.2",
@@ -31,7 +31,7 @@
     "nodemailer": "^4.6.5",
     "password-hash": "^1.2.2",
     "randomstring": "^1.1.5",
-    "twilio": "^3.17.5",
+    "twilio": "^3.41.0",
     "uuid": "^3.3.2",
     "zipcodes": "^6.0.0"
   },
